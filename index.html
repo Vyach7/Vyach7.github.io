@@ -134,7 +134,7 @@
             height: 120px;
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
-            background-size: cover;
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             border: none;
@@ -145,7 +145,7 @@
             opacity: 0.9;
         }
 
-        /* Стили для форм и остальных страниц */
+        /* Стили для форм */
         .form-container {
             position: absolute;
             left: 50%;
@@ -359,6 +359,35 @@
             border: none;
         }
 
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+        .close-image {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: red;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
         .toast {
             position: fixed;
             bottom: 30px;
@@ -418,7 +447,14 @@
                 1: 'images/Задание1.png',
                 2: 'images/Задание2.png',
                 3: 'images/Задание3.png',
-                4: 'images/Задание4.png'
+                // Для 4 задания нет картинки выполненного
+            },
+            // Картинки для уроков
+            lessonImages: {
+                1: 'images/урок кинематика.png',
+                2: 'images/урок сила тяжести.png',
+                3: 'images/урок сила трения.png',
+                4: 'images/урок работа.png'
             }
         };
 
@@ -552,8 +588,13 @@
                 let tasksHtml = '';
                 for (let i = 1; i <= 4; i++) {
                     const isCompleted = this.isTaskCompleted(i);
-                    const imgUrl = isCompleted ? PATHS.taskCompleted[i] : PATHS.taskNotCompleted[i];
-                    tasksHtml += `<button class="task-btn" style="background-image: url('${imgUrl}');" onclick="App.showPage('task', {taskId: ${i}})"></button>`;
+                    let imgUrl;
+                    if (isCompleted && i !== 4) {
+                        imgUrl = PATHS.taskCompleted[i];
+                    } else {
+                        imgUrl = PATHS.taskNotCompleted[i];
+                    }
+                    tasksHtml += `<button class="task-btn" style="background-image: url('${imgUrl}'); background-size: contain;" onclick="App.showPage('task', {taskId: ${i}})"></button>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
@@ -574,9 +615,10 @@
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
                         <div class="question-box"><strong>📌 Задание ${taskId}</strong><br><br>${task.question}</div>
                         <div class="answer-area">
-                            <input type="text" id="answerInput" class="answer-input" placeholder="Ответ" ${isCompleted ? 'disabled' : ''}>
-                            ${!isCompleted ? `<button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>` : '<div class="completed-msg">✅ Выполнено!</div>'}
+                            <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
+                            <button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>
                         </div>
+                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:48px; top:380px;">✅ Задание выполнено!</div>' : ''}
                         <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
                         ${taskId < 4 ? `<button class="next-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
                     </div>
@@ -590,12 +632,21 @@
                 const videoFolder = TASKS[taskId].videoFolder;
                 if (!userAnswer) { this.showToast('Введите ответ!', 'error'); return; }
                 if (userAnswer === correctAnswer) {
-                    this.saveTaskProgress(taskId);
-                    this.showToast('✅ Правильно!', 'success');
+                    const wasCompleted = this.isTaskCompleted(taskId);
+                    if (!wasCompleted) {
+                        this.saveTaskProgress(taskId);
+                        this.showToast('✅ Правильно! Задание засчитано!', 'success');
+                    } else {
+                        this.showToast('✅ Правильно! (задание уже было выполнено)', 'success');
+                    }
+                    // Воспроизводим видео после правильного ответа
                     this.playVideo(videoFolder, 'верно');
-                    this.showPage('tasks');
+                    // Обновляем страницу заданий, чтобы обновить картинку кнопки
+                    setTimeout(() => {
+                        this.renderTasksPage(document.getElementById('app'));
+                    }, 500);
                 } else {
-                    this.showToast(`❌ Неправильно. Ответ: ${correctAnswer}`, 'error');
+                    this.showToast(`❌ Неправильно. Попробуйте ещё раз!`, 'error');
                     this.playVideo(videoFolder, 'неверно');
                     answerInput.value = '';
                 }
@@ -604,9 +655,15 @@
                 const videoPath = `videos/${folder}/${type}.mp4`;
                 const modal = document.createElement('div');
                 modal.className = 'video-modal';
-                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4"></video>`;
+                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4">Видео не найдено</video>`;
                 modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
                 document.body.appendChild(modal);
+                
+                // Если видео не загрузилось
+                const video = modal.querySelector('video');
+                video.onerror = () => {
+                    modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? '🎉' : '😢'}</div><div style="font-size:24px; margin-top:20px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
+                };
             },
             renderLessonsPage(container) {
                 const lessons = [
@@ -617,7 +674,12 @@
                 ];
                 let html = '';
                 for (const l of lessons) {
-                    html += `<div class="lesson-card ${l.completed ? 'completed' : ''}" onclick="App.showLesson(${l.id})"><div style="font-size:20px;font-weight:bold;">📖 Урок ${l.id}</div><div>${l.name}</div><div style="font-size:12px;">${l.formula}</div>${l.completed ? '<div class="check-mark">✓</div>' : ''}</div>`;
+                    html += `<div class="lesson-card ${l.completed ? 'completed' : ''}" onclick="App.showLessonImage(${l.id})">
+                        <div style="font-size:20px;font-weight:bold;">📖 Урок ${l.id}</div>
+                        <div>${l.name}</div>
+                        <div style="font-size:12px;">${l.formula}</div>
+                        ${l.completed ? '<div class="check-mark">✓</div>' : ''}
+                    </div>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
@@ -627,9 +689,17 @@
                     </div>
                 `;
             },
-            showLesson(id) {
-                const content = { 1: '📖 Кинематика\n\nФормулы: v = s/t, s = v·t', 2: '📖 Сила тяжести\n\nF = mg, g = 10 м/с²', 3: '📖 Сила трения\n\nFтр = μN, для горизонтальной поверхности Fтр = μmg', 4: '📖 Механическая работа\n\nA = F·s, единица: Джоуль' };
-                alert(content[id]);
+            showLessonImage(lessonId) {
+                const imagePath = PATHS.lessonImages[lessonId];
+                if (!imagePath) {
+                    alert(`Материал для урока ${lessonId} в разработке`);
+                    return;
+                }
+                const modal = document.createElement('div');
+                modal.className = 'image-modal';
+                modal.innerHTML = `<button class="close-image" onclick="this.parentElement.remove()">✕ Закрыть</button><img src="${imagePath}" alt="Урок ${lessonId}" onerror="this.src=''; this.alt='Изображение не найдено';">`;
+                modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+                document.body.appendChild(modal);
             },
             renderProfilePage(container) {
                 if (!this.currentUser) { this.showPage('login'); return; }
@@ -690,7 +760,7 @@
                 }
                 let usersHtml = '';
                 for (const user of users) {
-                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</tr>`;
+                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td><tr>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
