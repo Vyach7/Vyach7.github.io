@@ -42,7 +42,7 @@
             z-index: 10;
         }
 
-        /* Базовые стили для кнопок */
+        /* Ромбовидные кнопки */
         .diamond-btn {
             position: absolute;
             cursor: pointer;
@@ -59,6 +59,7 @@
             opacity: 0.9;
         }
 
+        /* Кнопка назад */
         .back-btn {
             position: absolute;
             cursor: pointer;
@@ -116,6 +117,34 @@
             }
         }
 
+        /* Стили для страницы заданий - вертикальное меню слева */
+        .tasks-container {
+            position: absolute;
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .task-btn {
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
+            background-color: transparent;
+        }
+        .task-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+
         /* Стили для форм и остальных страниц */
         .form-container {
             position: absolute;
@@ -154,40 +183,6 @@
         .btn-primary { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
         .btn-secondary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
         .btn-danger { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
-
-        .tasks-grid {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 130px));
-            gap: 20px;
-            justify-content: center;
-            width: 90%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .task-card {
-            aspect-ratio: 130 / 90;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            position: relative;
-            transition: transform 0.1s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .task-card.completed { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-        .task-card .check-mark { position: absolute; top: 5px; right: 8px; font-size: 20px; }
-        .task-number { font-size: 24px; font-weight: bold; }
 
         .question-box {
             position: absolute;
@@ -389,6 +384,8 @@
             .next-btn { bottom: 10px; right: 10px; padding: 8px 16px; font-size: 12px; }
             .users-table { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
             .current-user-panel { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
+            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; gap: 10px; }
+            .task-btn { width: 70px; height: 70px; }
         }
     </style>
 </head>
@@ -409,23 +406,28 @@
             btnCheck: 'images/acetone-20251216-7246-722.png',
             bronzeMedal: 'images/бронза.png',
             silverMedal: 'images/серебро.png',
-            goldMedal: 'images/золото.png'
+            goldMedal: 'images/золото.png',
+            // Картинки для заданий
+            taskNotCompleted: {
+                1: 'images/неготово1.png',
+                2: 'images/неготово2.png',
+                3: 'images/неготово3.png',
+                4: 'images/неготово4.png'
+            },
+            taskCompleted: {
+                1: 'images/Задание1.png',
+                2: 'images/Задание2.png',
+                3: 'images/Задание3.png',
+                4: 'images/Задание4.png'
+            }
         };
 
-        // ============ ЗАДАНИЯ ============
+        // ============ ЗАДАНИЯ (только 1-4) ============
         const TASKS = {
             1: { question: "🐰 Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
             2: { question: "🚌 Fтр = 200000 Н, масса 5 т, g=10. Найдите μ.", answer: "4", videoFolder: "N2video" },
             3: { question: "🏀 Начальная скорость 10 м/с, время 2 с, g=10. Скорость у кольца?", answer: "10", videoFolder: "N3video" },
-            4: { question: "🏗️ Высота 20 м, масса 2 т, g=10. Работа крана?", answer: "400000", videoFolder: "N4video" },
-            5: { question: "🚗 Скорость 10 м/с. Путь за 5 с?", answer: "50", videoFolder: "N5video" },
-            6: { question: "⚡ Ускорение 2 м/с². Скорость через 3 с (v0=0)?", answer: "6", videoFolder: "N6video" },
-            7: { question: "💪 Сила 100 Н, масса 20 кг. Ускорение?", answer: "5", videoFolder: "N7video" },
-            8: { question: "💧 Плотность 800 кг/м³, объём 0.5 м³. Масса?", answer: "400", videoFolder: "N8video" },
-            9: { question: "📐 Давление 1000 Па, площадь 2 м². Сила?", answer: "2000", videoFolder: "N9video" },
-            10: { question: "💡 Мощность 500 Вт, время 10 с. Работа?", answer: "5000", videoFolder: "N10video" },
-            11: { question: "🔄 Частота 50 Гц. Период?", answer: "0.02", videoFolder: "N11video" },
-            12: { question: "🌊 Длина волны 2 м, скорость 340 м/с. Частота?", answer: "170", videoFolder: "N12video" }
+            4: { question: "🏗️ Высота 20 м, масса 2 т, g=10. Работа крана?", answer: "400000", videoFolder: "N4video" }
         };
 
         // ============ ПРИЛОЖЕНИЕ ============
@@ -473,7 +475,7 @@
             },
             renderMainPage(container) {
                 const completed = this.getCompletedCount();
-                document.title = this.currentUser ? `Курчатова - ${this.currentUser.login} (${completed}/12)` : 'Лаборатория Курчатова';
+                document.title = this.currentUser ? `Курчатова - ${this.currentUser.login} (${completed}/4)` : 'Лаборатория Курчатова';
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgMain}" onerror="this.style.display='none'">
@@ -548,14 +550,17 @@
             },
             renderTasksPage(container) {
                 let tasksHtml = '';
-                for (let i = 1; i <= 12; i++) {
+                for (let i = 1; i <= 4; i++) {
                     const isCompleted = this.isTaskCompleted(i);
-                    tasksHtml += `<div class="task-card ${isCompleted ? 'completed' : ''}" onclick="App.showPage('task', {taskId: ${i}})"><div class="task-number">${i}</div>${isCompleted ? '<div class="check-mark">✓</div>' : ''}</div>`;
+                    const imgUrl = isCompleted ? PATHS.taskCompleted[i] : PATHS.taskNotCompleted[i];
+                    tasksHtml += `<button class="task-btn" style="background-image: url('${imgUrl}');" onclick="App.showPage('task', {taskId: ${i}})"></button>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTasks}" onerror="this.style.display='none'">
-                        <div class="tasks-grid">${tasksHtml}</div>
+                        <div class="tasks-container">
+                            ${tasksHtml}
+                        </div>
                         <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                     </div>
                 `;
@@ -573,7 +578,7 @@
                             ${!isCompleted ? `<button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>` : '<div class="completed-msg">✅ Выполнено!</div>'}
                         </div>
                         <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
-                        ${taskId < 12 ? `<button class="next-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
+                        ${taskId < 4 ? `<button class="next-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
                     </div>
                 `;
             },
@@ -588,7 +593,7 @@
                     this.saveTaskProgress(taskId);
                     this.showToast('✅ Правильно!', 'success');
                     this.playVideo(videoFolder, 'верно');
-                    this.showPage('task', {taskId: taskId});
+                    this.showPage('tasks');
                 } else {
                     this.showToast(`❌ Неправильно. Ответ: ${correctAnswer}`, 'error');
                     this.playVideo(videoFolder, 'неверно');
@@ -629,10 +634,10 @@
             renderProfilePage(container) {
                 if (!this.currentUser) { this.showPage('login'); return; }
                 const completed = this.getCompletedCount();
-                const percent = (completed / 12) * 100;
+                const percent = (completed / 4) * 100;
                 let medalImg = '';
-                if (completed >= 9) medalImg = PATHS.goldMedal;
-                else if (completed >= 5) medalImg = PATHS.silverMedal;
+                if (completed >= 4) medalImg = PATHS.goldMedal;
+                else if (completed >= 2) medalImg = PATHS.silverMedal;
                 else if (completed >= 1) medalImg = PATHS.bronzeMedal;
                 container.innerHTML = `
                     <div class="viewport">
@@ -641,7 +646,7 @@
                             <div class="profile-avatar" onclick="App.changeAvatar()">${this.currentUser.avatarPath ? `<img src="${this.currentUser.avatarPath}" style="width:100%;height:100%;object-fit:cover;">` : '👤'}</div>
                             <h3>${this.currentUser.login}</h3>
                             <p>📅 ${new Date(this.currentUser.registrationDate).toLocaleDateString()}</p>
-                            <p>📊 ${completed}/12 (${Math.round(percent)}%)</p>
+                            <p>📊 ${completed}/4 (${Math.round(percent)}%)</p>
                             <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
                             <div class="achievement">${medalImg ? `<img src="${medalImg}" width="80">` : '📘 Нет достижений'}</div>
                             <div class="profile-buttons">
@@ -685,7 +690,7 @@
                 }
                 let usersHtml = '';
                 for (const user of users) {
-                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/12</td></tr>`;
+                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</tr>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
@@ -693,7 +698,7 @@
                         <div class="current-user-panel">
                             <h3>👤 Текущий</h3>
                             <p>${this.currentUser ? this.currentUser.login : 'Не авторизован'}</p>
-                            <p>${this.currentUser ? this.getCompletedCount() + '/12' : ''}</p>
+                            <p>${this.currentUser ? this.getCompletedCount() + '/4' : ''}</p>
                             ${this.currentUser ? '<button onclick="App.showPage(\'profile\')">Профиль</button>' : '<button onclick="App.showPage(\'login\')">Войти</button>'}
                         </div>
                         <div class="users-table">
@@ -710,7 +715,7 @@
                     const user = JSON.parse(userData);
                     const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${login}`);
                     const completed = progress ? JSON.parse(progress).length : 0;
-                    alert(`Пользователь: ${login}\nДата: ${new Date(user.registrationDate).toLocaleDateString()}\nПрогресс: ${completed}/12`);
+                    alert(`Пользователь: ${login}\nДата: ${new Date(user.registrationDate).toLocaleDateString()}\nПрогресс: ${completed}/4`);
                 }
             },
             showToast(text, type) {
