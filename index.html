@@ -17,7 +17,6 @@
             background: #1a1a2e;
         }
 
-        /* Главный контейнер с сохранением пропорций 800:450 (как в WPF) */
         .viewport {
             position: relative;
             width: 100vw;
@@ -26,18 +25,6 @@
             overflow: hidden;
         }
 
-        /* Контент масштабируется относительно ширины/высоты окна */
-        .content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Сохраняем пропорции 800x450, но заполняем экран */
-            object-fit: contain;
-        }
-
-        /* Фон растягивается на весь экран */
         .background {
             position: absolute;
             width: 100%;
@@ -46,7 +33,6 @@
             z-index: 0;
         }
 
-        /* Контейнер для всех элементов интерфейса (относительные координаты) */
         .ui-container {
             position: absolute;
             top: 0;
@@ -63,6 +49,7 @@
             transition: transform 0.1s, opacity 0.1s;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             border: none;
             clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
@@ -75,70 +62,61 @@
         .back-btn {
             position: absolute;
             cursor: pointer;
-            background-size: cover;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             border: none;
         }
         .back-btn:active {
-            opacity: 0.8;
             transform: scale(0.97);
+            opacity: 0.8;
         }
 
-        /* Координаты и размеры задаются в процентах от родителя */
-        /* Исходные размеры в WPF: ширина 800, высота 450 */
-        /* Пересчитываем в проценты: left% = left_px / 800 * 100, top% = top_px / 450 * 100, width% = width_px / 800 * 100, height% = height_px / 450 * 100 */
-
-        /* Кнопка "Пользователи" (127, 299, 150x100) */
+        /* Координаты в процентах от 800x450 */
         .btn-users {
-            left: 15.875%;    /* 127/800 */
-            top: 66.444%;     /* 299/450 */
-            width: 18.75%;    /* 150/800 */
-            height: 22.222%;  /* 100/450 */
+            left: 15.875%;
+            top: 66.444%;
+            width: 18.75%;
+            aspect-ratio: 150 / 100;
         }
-
-        /* Кнопка "Уроки" (316, 299, 150x100) */
         .btn-lessons {
-            left: 39.5%;      /* 316/800 */
+            left: 39.5%;
             top: 66.444%;
             width: 18.75%;
-            height: 22.222%;
+            aspect-ratio: 150 / 100;
         }
-
-        /* Кнопка "Задания" (486, 299, 150x100) */
         .btn-tasks {
-            left: 60.75%;     /* 486/800 */
+            left: 60.75%;
             top: 66.444%;
             width: 18.75%;
-            height: 22.222%;
+            aspect-ratio: 150 / 100;
         }
-
-        /* Кнопка "Назад" (Profile) (686, 400, 87x53) */
         .btn-profile {
-            left: 85.75%;     /* 686/800 */
-            top: 88.888%;     /* 400/450 */
-            width: 10.875%;   /* 87/800 */
-            height: 11.777%;  /* 53/450 */
+            left: 85.75%;
+            top: 88.888%;
+            width: 10.875%;
+            aspect-ratio: 87 / 53;
+            background-size: contain !important;
         }
 
-        /* Адаптация для мобильных устройств: увеличиваем размеры кнопок */
+        /* Адаптив для мобильных */
         @media (max-width: 768px) {
             .btn-users, .btn-lessons, .btn-tasks {
                 width: 25%;
-                height: auto;
-                aspect-ratio: 150 / 100;
+                top: 65%;
             }
+            .btn-users { left: 8%; }
+            .btn-lessons { left: 37%; }
+            .btn-tasks { left: 66%; }
             .btn-profile {
                 width: 15%;
-                height: auto;
-                aspect-ratio: 87 / 53;
+                left: 80%;
+                top: 85%;
             }
-            /* Корректируем позиции на мобильных */
-            .btn-users { left: 8%; top: 65%; }
-            .btn-lessons { left: 37%; top: 65%; }
-            .btn-tasks { left: 66%; top: 65%; }
-            .btn-profile { left: 80%; top: 85%; }
         }
 
-        /* Остальные стили (формы, сетка заданий и т.д.) остаются как были, но тоже адаптивны */
+        /* Стили для форм и остальных страниц */
         .form-container {
             position: absolute;
             left: 50%;
@@ -154,7 +132,7 @@
             z-index: 10;
             backdrop-filter: blur(10px);
         }
-
+        .form-container h2 { color: white; margin-bottom: 20px; }
         .form-container input {
             width: 100%;
             padding: 12px;
@@ -163,7 +141,6 @@
             border-radius: 8px;
             font-size: 16px;
         }
-
         .form-container button {
             width: 100%;
             padding: 12px;
@@ -174,6 +151,9 @@
             cursor: pointer;
             font-weight: bold;
         }
+        .btn-primary { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
+        .btn-secondary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
 
         .tasks-grid {
             position: absolute;
@@ -190,7 +170,6 @@
             overflow-y: auto;
             padding: 20px;
         }
-
         .task-card {
             aspect-ratio: 130 / 90;
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -206,6 +185,9 @@
             transition: transform 0.1s;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
+        .task-card.completed { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .task-card .check-mark { position: absolute; top: 5px; right: 8px; font-size: 20px; }
+        .task-number { font-size: 24px; font-weight: bold; }
 
         .question-box {
             position: absolute;
@@ -219,7 +201,6 @@
             border-radius: 10px;
             z-index: 10;
         }
-
         .answer-area {
             position: absolute;
             left: 8%;
@@ -229,7 +210,6 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-
         .answer-input {
             width: 250px;
             padding: 10px;
@@ -237,7 +217,6 @@
             border: 2px solid #667eea;
             border-radius: 8px;
         }
-
         .check-btn {
             width: 120px;
             height: 50px;
@@ -245,7 +224,6 @@
             cursor: pointer;
             border: none;
         }
-
         .next-btn {
             position: absolute;
             right: 5%;
@@ -258,34 +236,8 @@
             font-weight: bold;
             border: none;
         }
+        .completed-msg { font-size: 18px; color: #43e97b; margin-top: 10px; font-weight: bold; }
 
-        /* Адаптив для страницы задания */
-        @media (max-width: 768px) {
-            .question-box {
-                width: 80%;
-                left: 10%;
-                top: 10%;
-                font-size: 14px;
-            }
-            .answer-area {
-                left: 10%;
-                bottom: 10%;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .check-btn {
-                margin-top: 10px;
-            }
-            .next-btn {
-                bottom: 10px;
-                right: 10px;
-                padding: 8px 16px;
-                font-size: 12px;
-            }
-        }
-
-        /* Остальные стили (профиль, таблица пользователей, уроки) — они уже были адаптивны, оставим как есть */
-        /* (здесь продолжение предыдущих стилей, но они не менялись) */
         .profile-container {
             position: absolute;
             left: 50%;
@@ -312,6 +264,23 @@
             cursor: pointer;
             overflow: hidden;
         }
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            width: 0%;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
         .users-table {
             position: absolute;
             right: 5%;
@@ -322,6 +291,12 @@
             border-radius: 10px;
             overflow-x: auto;
         }
+        .users-table table { width: 100%; color: white; border-collapse: collapse; }
+        .users-table th, .users-table td { padding: 10px; text-align: left; border-bottom: 1px solid #444; }
+        .users-table th { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .user-row { cursor: pointer; }
+        .user-row:hover { background: rgba(102, 126, 234, 0.3); }
+
         .current-user-panel {
             position: absolute;
             left: 5%;
@@ -333,6 +308,8 @@
             min-width: 200px;
             max-width: 280px;
         }
+        .current-user-panel button { margin-top: 10px; padding: 8px 15px; background: #43e97b; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
         .lessons-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
@@ -358,7 +335,10 @@
             cursor: pointer;
             text-align: center;
             padding: 10px;
+            color: white;
         }
+        .lesson-card.completed { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
         .video-modal {
             position: fixed;
             top: 0;
@@ -371,10 +351,7 @@
             align-items: center;
             justify-content: center;
         }
-        .video-modal video {
-            max-width: 90%;
-            max-height: 90%;
-        }
+        .video-modal video { max-width: 90%; max-height: 90%; }
         .close-video {
             position: absolute;
             top: 20px;
@@ -386,6 +363,7 @@
             cursor: pointer;
             border: none;
         }
+
         .toast {
             position: fixed;
             bottom: 30px;
@@ -403,13 +381,22 @@
         }
         .toast.success { background: #43e97b; color: #1a1a2e; }
         .toast.error { background: #f5576c; color: white; }
+
+        @media (max-width: 768px) {
+            .question-box { width: 80%; left: 10%; top: 10%; font-size: 14px; }
+            .answer-area { left: 10%; bottom: 10%; flex-direction: column; align-items: flex-start; }
+            .check-btn { margin-top: 10px; }
+            .next-btn { bottom: 10px; right: 10px; padding: 8px 16px; font-size: 12px; }
+            .users-table { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
+            .current-user-panel { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
+        }
     </style>
 </head>
 <body>
     <div id="app"></div>
 
     <script>
-        // ============ КОНФИГУРАЦИЯ ПУТЕЙ (ВАШИ ФАЙЛЫ) ============
+        // ============ КОНФИГУРАЦИЯ ============
         const PATHS = {
             bgMain: 'images/image (1).jpeg',
             bgLogin: 'images/image (6).jpeg',
@@ -441,13 +428,10 @@
             12: { question: "🌊 Длина волны 2 м, скорость 340 м/с. Частота?", answer: "170", videoFolder: "N12video" }
         };
 
-        // ============ ПРИЛОЖЕНИЕ (сокращённо, но полностью рабочее) ============
+        // ============ ПРИЛОЖЕНИЕ ============
         const App = {
             currentUser: null,
-            init() {
-                this.loadCurrentUser();
-                this.showPage('main');
-            },
+            init() { this.loadCurrentUser(); this.showPage('main'); },
             loadCurrentUser() {
                 const saved = localStorage.getItem('LaboratoriaKurchatova_currentUser');
                 if (saved) {
@@ -471,12 +455,8 @@
                 }
                 return false;
             },
-            isTaskCompleted(taskNumber) {
-                return this.currentUser && this.currentUser.completedTasks.includes(taskNumber);
-            },
-            getCompletedCount() {
-                return this.currentUser ? this.currentUser.completedTasks.length : 0;
-            },
+            isTaskCompleted(taskNumber) { return this.currentUser && this.currentUser.completedTasks.includes(taskNumber); },
+            getCompletedCount() { return this.currentUser ? this.currentUser.completedTasks.length : 0; },
             showPage(page, params = {}) {
                 const appDiv = document.getElementById('app');
                 switch(page) {
@@ -496,7 +476,7 @@
                 document.title = this.currentUser ? `Курчатова - ${this.currentUser.login} (${completed}/12)` : 'Лаборатория Курчатова';
                 container.innerHTML = `
                     <div class="viewport">
-                        <img class="background" src="${PATHS.bgMain}" alt="Фон" onerror="this.style.display='none'">
+                        <img class="background" src="${PATHS.bgMain}" onerror="this.style.display='none'">
                         <div class="ui-container">
                             <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('users')"></button>
                             <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.showPage('lessons')"></button>
@@ -535,9 +515,7 @@
                     this.saveCurrentUser();
                     this.showToast(`Добро пожаловать, ${login}!`, 'success');
                     this.showPage('main');
-                } else {
-                    this.showToast('Неверный пароль!', 'error');
-                }
+                } else { this.showToast('Неверный пароль!', 'error'); }
             },
             renderRegisterPage(container) {
                 container.innerHTML = `
@@ -572,15 +550,13 @@
                 let tasksHtml = '';
                 for (let i = 1; i <= 12; i++) {
                     const isCompleted = this.isTaskCompleted(i);
-                    tasksHtml += `<div class="task-card ${isCompleted ? 'completed' : ''}" onclick="App.showPage('task', {taskId: ${i}})">
-                        <div class="task-number">${i}</div>${isCompleted ? '<div class="check-mark">✓</div>' : ''}
-                    </div>`;
+                    tasksHtml += `<div class="task-card ${isCompleted ? 'completed' : ''}" onclick="App.showPage('task', {taskId: ${i}})"><div class="task-number">${i}</div>${isCompleted ? '<div class="check-mark">✓</div>' : ''}</div>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTasks}" onerror="this.style.display='none'">
                         <div class="tasks-grid">${tasksHtml}</div>
-                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:cover; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                     </div>
                 `;
             },
@@ -596,7 +572,7 @@
                             <input type="text" id="answerInput" class="answer-input" placeholder="Ответ" ${isCompleted ? 'disabled' : ''}>
                             ${!isCompleted ? `<button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>` : '<div class="completed-msg">✅ Выполнено!</div>'}
                         </div>
-                        <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:cover; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
+                        <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
                         ${taskId < 12 ? `<button class="next-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
                     </div>
                 `;
@@ -636,28 +612,18 @@
                 ];
                 let html = '';
                 for (const l of lessons) {
-                    html += `<div class="lesson-card ${l.completed ? 'completed' : ''}" onclick="App.showLesson(${l.id})">
-                        <div style="font-size:20px;font-weight:bold;">📖 Урок ${l.id}</div>
-                        <div>${l.name}</div>
-                        <div style="font-size:12px;">${l.formula}</div>
-                        ${l.completed ? '<div class="check-mark">✓</div>' : ''}
-                    </div>`;
+                    html += `<div class="lesson-card ${l.completed ? 'completed' : ''}" onclick="App.showLesson(${l.id})"><div style="font-size:20px;font-weight:bold;">📖 Урок ${l.id}</div><div>${l.name}</div><div style="font-size:12px;">${l.formula}</div>${l.completed ? '<div class="check-mark">✓</div>' : ''}</div>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
                         <div class="lessons-grid">${html}</div>
-                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:cover; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                     </div>
                 `;
             },
             showLesson(id) {
-                const content = {
-                    1: '📖 Кинематика\n\nФормулы: v = s/t, s = v·t',
-                    2: '📖 Сила тяжести\n\nF = mg, g = 10 м/с²',
-                    3: '📖 Сила трения\n\nFтр = μN, для горизонтальной поверхности Fтр = μmg',
-                    4: '📖 Механическая работа\n\nA = F·s, единица: Джоуль'
-                };
+                const content = { 1: '📖 Кинематика\n\nФормулы: v = s/t, s = v·t', 2: '📖 Сила тяжести\n\nF = mg, g = 10 м/с²', 3: '📖 Сила трения\n\nFтр = μN, для горизонтальной поверхности Fтр = μmg', 4: '📖 Механическая работа\n\nA = F·s, единица: Джоуль' };
                 alert(content[id]);
             },
             renderProfilePage(container) {
@@ -734,7 +700,7 @@
                             <h3 style="padding:10px; background:#333;">📋 Пользователи</h3>
                             <table style="width:100%"><thead><tr><th>Логин</th><th>Дата</th><th>Прогресс</th></tr></thead><tbody>${usersHtml}</tbody></table>
                         </div>
-                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:cover; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                     </div>
                 `;
             },
