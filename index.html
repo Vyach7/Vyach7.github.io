@@ -506,8 +506,8 @@
             .btn-tasks { left: 67%; }
             .btn-profile { width: 20%; left: 75%; top: 5%; }
             
-            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
-            .task-btn { width: 100px; height: 100px; }
+            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: column; align-items: center; gap: 15px; }
+            .task-btn { width: 150px; height: 150px; }
             
             .question-box { width: 90%; left: 5%; top: 10%; font-size: 14px; }
             .task-number-image { width: 60%; right: 20%; top: 30%; }
@@ -521,10 +521,12 @@
             
             .current-user-panel { top: auto; bottom: 80px; left: 10px; right: 10px; }
             .users-table { top: auto; bottom: 200px; left: 10px; right: 10px; width: auto; }
+            
+            .profile-buttons button { padding: 8px 12px; font-size: 12px; }
         }
 
         @media (max-width: 480px) {
-            .task-btn { width: 70px; height: 70px; }
+            .task-btn { width: 100px; height: 100px; }
             .question-box { font-size: 12px; }
             .task-number-image { width: 50%; right: 25%; top: 25%; }
         }
@@ -550,6 +552,7 @@
             btnAddUser: 'images/добавить пользователя.png',
             btnNext: 'images/след.png',
             btnPrev: 'images/назад.png',
+            btnForward: 'images/вперёд.png',
             taskNumbers: {
                 1: 'images/первая.png',
                 2: 'images/вторая.png',
@@ -771,12 +774,13 @@
                 const lessonName = LESSON_NAMES[lessonId];
                 container.innerHTML = `
                     <div class="viewport">
-                        <img class="background" src="${backgroundImage}" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)'">
-                        <div class="lesson-nav">
+                        <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
+                        <img class="background" src="${backgroundImage}" style="position:absolute; width:100%; height:100%; object-fit:contain; z-index:1;" onerror="this.style.display='none'">
+                        <div class="lesson-nav" style="z-index:20;">
                             ${hasPrev ? `<button class="nav-btn" onclick="App.prevLesson()"><img src="${PATHS.btnPrev}" alt="Назад"></button>` : '<div style="width:100px;"></div>'}
-                            ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnPrev}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
+                            ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
                         </div>
-                        <div style="position:absolute; top:80px; left:20px; z-index:10;">
+                        <div style="position:absolute; top:80px; left:20px; z-index:20;">
                             <button class="back-btn" style="width:120px; height:70px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                         </div>
                     </div>
@@ -824,7 +828,7 @@
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
                         <div class="question-box"><strong>Задание ${taskId}</strong><br><br>${task.question}</div>
                         <div class="task-number-image">
-                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}">
+                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}" style="transform: scale(6); transform-origin: center;">
                         </div>
                         <div class="answer-area">
                             <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
