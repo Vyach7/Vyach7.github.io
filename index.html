@@ -32,15 +32,16 @@
             z-index: 0;
         }
 
-        /* Стили для страницы входа */
+        /* Стили для страницы входа - увеличенные кнопки */
         .login-container {
             position: absolute;
-            left: 10%;
+            left: 5%;
             top: 50%;
             transform: translateY(-50%);
             padding: 40px;
             border-radius: 20px;
-            min-width: 350px;
+            width: 40%;
+            max-width: 450px;
             z-index: 10;
         }
 
@@ -74,20 +75,17 @@
             color: #333;
         }
 
-        .input-group input:focus {
-            outline: none;
-            box-shadow: 0 0 5px #43e97b;
-        }
-
         .buttons-container {
             position: absolute;
-            right: 15%;
+            right: 5%;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 20px;
             z-index: 10;
+            width: 25%;
+            max-width: 280px;
         }
 
         .action-img-btn {
@@ -95,14 +93,19 @@
             transition: transform 0.1s, opacity 0.1s;
             border: none;
             background: transparent;
-            width: 200px;
-            height: auto;
+            width: 100%;
         }
 
         .action-img-btn img {
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        /* Кнопка регистрации увеличенная в 2 раза по высоте */
+        .btn-register-large {
+            transform: scaleY(2);
+            transform-origin: center;
         }
 
         .action-img-btn:active {
@@ -119,7 +122,7 @@
             padding: 40px;
             border-radius: 20px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             text-align: center;
             z-index: 10;
         }
@@ -153,32 +156,24 @@
             color: #333;
         }
 
-        .register-container .input-group input:focus {
-            outline: none;
-            box-shadow: 0 0 5px #43e97b;
-        }
-
         .register-img-btn {
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
             border: none;
             background: transparent;
             margin-top: 20px;
+            width: 100%;
+            max-width: 280px;
         }
 
         .register-img-btn img {
             width: 100%;
-            max-width: 250px;
             height: auto;
-        }
-
-        .register-img-btn:active {
-            transform: scale(0.97);
         }
 
         .back-to-login {
             margin-top: 20px;
-            background: transparent !important;
+            background: rgba(0,0,0,0.6);
             color: white !important;
             border: 1px solid white !important;
             padding: 10px 20px;
@@ -248,38 +243,43 @@
         }
         .btn-profile {
             left: 85.75%;
-            top: 88.888%;
-            width: 10.875%;
+            top: 10%;
+            width: 12%;
             aspect-ratio: 87 / 53;
             background-size: contain !important;
-        }
-
-        @media (max-width: 768px) {
-            .login-container { left: 5%; right: 5%; min-width: auto; width: 90%; }
-            .buttons-container { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: 100px; flex-direction: row; }
-            .action-img-btn { width: 150px; }
-            .btn-users, .btn-lessons, .btn-tasks { width: 25%; top: 65%; }
-            .btn-users { left: 8%; }
-            .btn-lessons { left: 37%; }
-            .btn-tasks { left: 66%; }
-            .btn-profile { width: 15%; left: 80%; top: 85%; }
         }
 
         /* Стили для заданий */
         .tasks-container {
             position: absolute;
-            left: 5%;
+            left: 12%;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 15px;
             z-index: 10;
         }
 
+        .task-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .task-number-img {
+            width: 80px;
+            height: auto;
+        }
+
+        .task-number-img img {
+            width: 100%;
+            height: auto;
+        }
+
         .task-btn {
-            width: 240px;
-            height: 240px;
+            width: 200px;
+            height: 200px;
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
             background-size: contain;
@@ -333,14 +333,19 @@
         .next-task-btn {
             position: absolute;
             right: 5%;
-            bottom: 5%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            bottom: 20%;
             cursor: pointer;
-            font-weight: bold;
             border: none;
+            background: transparent;
+            width: 100px;
+        }
+        .next-task-btn img {
+            width: 100%;
+            height: auto;
+        }
+        .next-task-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
         }
         .completed-msg { font-size: 18px; color: #43e97b; margin-top: 10px; font-weight: bold; }
 
@@ -361,10 +366,11 @@
             transition: transform 0.1s, opacity 0.1s;
             border: none;
             background: transparent;
+            width: 100px;
         }
 
         .nav-btn img {
-            width: 100px;
+            width: 100%;
             height: auto;
         }
 
@@ -435,7 +441,7 @@
         .current-user-panel {
             position: absolute;
             left: 5%;
-            top: 20%;
+            top: 10%;
             background: rgba(0,0,0,0.85);
             padding: 15px;
             border-radius: 10px;
@@ -488,16 +494,40 @@
         .toast.success { background: #43e97b; color: #1a1a2e; }
         .toast.error { background: #f5576c; color: white; }
 
+        /* Адаптив для мобильных устройств */
         @media (max-width: 768px) {
-            .question-box { width: 80%; left: 10%; top: 10%; font-size: 14px; }
-            .answer-area { left: 10%; bottom: 10%; flex-direction: column; align-items: flex-start; }
-            .check-btn { margin-top: 10px; }
-            .next-task-btn { bottom: 10px; right: 10px; padding: 8px 16px; font-size: 12px; }
-            .users-table { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
-            .current-user-panel { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
-            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center; }
-            .task-btn { width: 120px; height: 120px; }
-            .nav-btn img { width: 60px; }
+            .login-container { width: 90%; left: 5%; right: 5%; }
+            .buttons-container { position: relative; right: auto; left: 50%; transform: translateX(-50%); top: auto; margin-top: 20px; flex-direction: row; width: 80%; gap: 10px; }
+            .action-img-btn { width: 45%; }
+            .register-container { width: 95%; padding: 20px; }
+            
+            .btn-users, .btn-lessons, .btn-tasks { width: 28%; top: 60%; }
+            .btn-users { left: 5%; }
+            .btn-lessons { left: 36%; }
+            .btn-tasks { left: 67%; }
+            .btn-profile { width: 20%; left: 75%; top: 5%; }
+            
+            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            .task-wrapper { flex-direction: column; gap: 5px; }
+            .task-number-img { width: 50px; }
+            .task-btn { width: 100px; height: 100px; }
+            
+            .question-box { width: 90%; left: 5%; top: 10%; font-size: 14px; }
+            .answer-area { left: 5%; bottom: 15%; }
+            .next-task-btn { bottom: 10%; right: 5%; width: 70px; }
+            
+            .lesson-nav { bottom: 15px; gap: 20px; }
+            .nav-btn { width: 60px; }
+            
+            .current-user-panel { top: auto; bottom: 80px; left: 10px; right: 10px; }
+            .users-table { top: auto; bottom: 200px; left: 10px; right: 10px; width: auto; }
+        }
+
+        @media (max-width: 480px) {
+            .task-btn { width: 70px; height: 70px; }
+            .task-number-img { width: 40px; }
+            .check-btn { width: 80px; height: 40px; background-size: contain; background-repeat: no-repeat; }
+            .answer-input { width: 180px; }
         }
     </style>
 </head>
@@ -519,8 +549,14 @@
             btnLogin: 'images/вход.png',
             btnRegister: 'images/регистрация.png',
             btnAddUser: 'images/добавить пользователя.png',
-            btnNext: 'images/вперёд.png',
+            btnNext: 'images/след.png',
             btnPrev: 'images/назад.png',
+            taskNumbers: {
+                1: 'images/первая.png',
+                2: 'images/вторая.png',
+                3: 'images/третья.png',
+                4: 'images/четвёртая.png'
+            },
             bronzeMedal: 'images/бронза.png',
             silverMedal: 'images/серебро.png',
             goldMedal: 'images/золото.png',
@@ -565,11 +601,8 @@
             currentLesson: 1,
             init() { 
                 this.loadCurrentUser(); 
-                if (this.currentUser) {
-                    this.showPage('main');
-                } else {
-                    this.showPage('login');
-                }
+                // Всегда показываем окно входа при загрузке
+                this.showPage('login');
             },
             loadCurrentUser() {
                 const saved = localStorage.getItem('LaboratoriaKurchatova_currentUser');
@@ -631,7 +664,7 @@
                             <button class="action-img-btn" onclick="App.handleLogin()">
                                 <img src="${PATHS.btnLogin}" alt="Вход">
                             </button>
-                            <button class="action-img-btn" onclick="App.showPage('register')">
+                            <button class="action-img-btn btn-register-large" onclick="App.showPage('register')">
                                 <img src="${PATHS.btnRegister}" alt="Регистрация">
                             </button>
                         </div>
@@ -734,7 +767,11 @@
             },
             // ============ УРОКИ ============
             renderLessonPage(container, lessonId) {
-                const backgroundImage = PATHS.lessonBackgrounds[lessonId];
+                let backgroundImage = PATHS.lessonBackgrounds[lessonId];
+                // Проверка для 3 урока - сила трения
+                if (lessonId === 3 && !backgroundImage) {
+                    backgroundImage = 'images/урок сила трения.png';
+                }
                 const hasPrev = lessonId > 1;
                 const hasNext = lessonId < 4;
                 const lessonName = LESSON_NAMES[lessonId];
@@ -777,7 +814,14 @@
                     } else {
                         imgUrl = PATHS.taskNotCompleted[i];
                     }
-                    tasksHtml += `<button class="task-btn" style="background-image: url('${imgUrl}');" onclick="App.showPage('task', {taskId: ${i}})"></button>`;
+                    tasksHtml += `
+                        <div class="task-wrapper">
+                            <div class="task-number-img">
+                                <img src="${PATHS.taskNumbers[i]}" alt="Задание ${i}">
+                            </div>
+                            <button class="task-btn" style="background-image: url('${imgUrl}');" onclick="App.showPage('task', {taskId: ${i}})"></button>
+                        </div>
+                    `;
                 }
                 container.innerHTML = `
                     <div class="viewport">
@@ -801,7 +845,7 @@
                         </div>
                         ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:48px; top:380px;">Задание выполнено!</div>' : ''}
                         <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
-                        ${taskId < 4 ? `<button class="next-task-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">Задание ${taskId + 1}</button>` : ''}
+                        ${taskId < 4 ? `<button class="next-task-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})"><img src="${PATHS.btnNext}" alt="След"></button>` : ''}
                     </div>
                 `;
             },
