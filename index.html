@@ -38,8 +38,6 @@
             left: 10%;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
             min-width: 350px;
@@ -51,6 +49,7 @@
             margin-bottom: 30px;
             font-size: 28px;
             text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .input-group {
@@ -62,6 +61,7 @@
             color: white;
             margin-bottom: 8px;
             font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .input-group input {
@@ -116,8 +116,6 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
             width: 90%;
@@ -130,6 +128,7 @@
             color: white;
             margin-bottom: 30px;
             font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .register-container .input-group {
@@ -141,6 +140,7 @@
             color: white;
             margin-bottom: 8px;
             font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .register-container .input-group input {
@@ -185,6 +185,7 @@
             border-radius: 10px;
             cursor: pointer;
             width: 100%;
+            font-size: 16px;
         }
 
         /* Стили для основного интерфейса */
@@ -298,7 +299,8 @@
             top: 20%;
             width: 35%;
             color: white;
-            font-size: clamp(12px, 2vw, 16px);
+            font-size: 16px;
+            line-height: 1.6;
             background: rgba(0,0,0,0.6);
             padding: 15px;
             border-radius: 10px;
@@ -376,7 +378,7 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
             border-radius: 20px;
             width: 90%;
@@ -420,7 +422,7 @@
             top: 20%;
             width: 90%;
             max-width: 400px;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.85);
             border-radius: 10px;
             overflow-x: auto;
         }
@@ -543,10 +545,18 @@
 
         // ============ ЗАДАНИЯ ============
         const TASKS = {
-            1: { question: "🐰 Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
-            2: { question: "🚌 Fтр = 200000 Н, масса 5 т, g=10. Найдите μ.", answer: "4", videoFolder: "N2video" },
-            3: { question: "🏀 Начальная скорость 10 м/с, время 2 с, g=10. Скорость у кольца?", answer: "10", videoFolder: "N3video" },
-            4: { question: "🏗️ Высота 20 м, масса 2 т, g=10. Работа крана?", answer: "400000", videoFolder: "N4video" }
+            1: { question: "Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
+            2: { question: "Fтр = 200000 Н, масса 5 т, g = 10 м/с². Найдите коэффициент трения.", answer: "4", videoFolder: "N2video" },
+            3: { question: "Начальная скорость 10 м/с, время полёта 2 с, g = 10 м/с². Найдите скорость у кольца.", answer: "10", videoFolder: "N3video" },
+            4: { question: "Высота 20 м, масса 2 т, g = 10 м/с². Найдите работу крана.", answer: "400000", videoFolder: "N4video" }
+        };
+
+        // ============ УРОКИ ============
+        const LESSON_NAMES = {
+            1: "Кинематика",
+            2: "Сила тяжести",
+            3: "Сила трения",
+            4: "Работа"
         };
 
         // ============ ПРИЛОЖЕНИЕ ============
@@ -607,7 +617,7 @@
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
                         <div class="login-container">
-                            <h2>🔐 Вход в систему</h2>
+                            <h2>Вход в систему</h2>
                             <div class="input-group">
                                 <label>Логин</label>
                                 <input type="text" id="loginInput" placeholder="Введите ваш логин">
@@ -659,7 +669,7 @@
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
                         <div class="register-container">
-                            <h2>📝 Создание аккаунта</h2>
+                            <h2>Создание аккаунта</h2>
                             <div class="input-group">
                                 <label>Введите логин</label>
                                 <input type="text" id="regLoginInput" placeholder="Придумайте логин">
@@ -675,7 +685,7 @@
                             <button class="register-img-btn" onclick="App.handleRegister()">
                                 <img src="${PATHS.btnAddUser}" alt="Добавить пользователя">
                             </button>
-                            <button class="back-to-login" onclick="App.showPage('login')">← Назад ко входу</button>
+                            <button class="back-to-login" onclick="App.showPage('login')">Назад ко входу</button>
                         </div>
                     </div>
                 `;
@@ -727,12 +737,16 @@
                 const backgroundImage = PATHS.lessonBackgrounds[lessonId];
                 const hasPrev = lessonId > 1;
                 const hasNext = lessonId < 4;
+                const lessonName = LESSON_NAMES[lessonId];
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${backgroundImage}" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)'">
                         <div class="lesson-nav">
                             ${hasPrev ? `<button class="nav-btn" onclick="App.prevLesson()"><img src="${PATHS.btnPrev}" alt="Назад"></button>` : '<div style="width:100px;"></div>'}
                             ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnNext}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
+                        </div>
+                        <div style="position:absolute; top:20px; left:20px; z-index:10; background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: 20px;">
+                            <span style="color:white; font-size:18px; font-weight:bold;">${lessonName}</span>
                         </div>
                         <div style="position:absolute; bottom:20px; left:20px; z-index:10;">
                             <button class="back-btn" style="width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
@@ -780,14 +794,14 @@
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
-                        <div class="question-box"><strong>📌 Задание ${taskId}</strong><br><br>${task.question}</div>
+                        <div class="question-box"><strong>Задание ${taskId}</strong><br><br>${task.question}</div>
                         <div class="answer-area">
                             <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
                             <button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>
                         </div>
-                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:48px; top:380px;">✅ Задание выполнено!</div>' : ''}
+                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:48px; top:380px;">Задание выполнено!</div>' : ''}
                         <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
-                        ${taskId < 4 ? `<button class="next-task-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
+                        ${taskId < 4 ? `<button class="next-task-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">Задание ${taskId + 1}</button>` : ''}
                     </div>
                 `;
             },
@@ -802,16 +816,16 @@
                     const wasCompleted = this.isTaskCompleted(taskId);
                     if (!wasCompleted) {
                         this.saveTaskProgress(taskId);
-                        this.showToast('✅ Правильно! Задание засчитано!', 'success');
+                        this.showToast('Правильно! Задание засчитано!', 'success');
                     } else {
-                        this.showToast('✅ Правильно! (задание уже было выполнено)', 'success');
+                        this.showToast('Правильно! (задание уже было выполнено)', 'success');
                     }
                     this.playVideo(videoFolder, 'верно');
                     setTimeout(() => {
                         this.renderTasksPage(document.getElementById('app'));
                     }, 500);
                 } else {
-                    this.showToast(`❌ Неправильно. Попробуйте ещё раз!`, 'error');
+                    this.showToast('Неправильно. Попробуйте ещё раз!', 'error');
                     this.playVideo(videoFolder, 'неверно');
                     answerInput.value = '';
                 }
@@ -820,12 +834,12 @@
                 const videoPath = `videos/${folder}/${type}.mp4`;
                 const modal = document.createElement('div');
                 modal.className = 'video-modal';
-                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4">Видео не найдено</video>`;
+                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4">Видео не найдено</video>`;
                 modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
                 document.body.appendChild(modal);
                 const video = modal.querySelector('video');
                 video.onerror = () => {
-                    modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? '🎉' : '😢'}</div><div style="font-size:24px; margin-top:20px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
+                    modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
                 };
             },
             // ============ ПРОФИЛЬ ============
@@ -843,10 +857,10 @@
                         <div class="profile-container">
                             <div class="profile-avatar" onclick="App.changeAvatar()">${this.currentUser.avatarPath ? `<img src="${this.currentUser.avatarPath}" style="width:100%;height:100%;object-fit:cover;">` : '👤'}</div>
                             <h3>${this.currentUser.login}</h3>
-                            <p>📅 ${new Date(this.currentUser.registrationDate).toLocaleDateString()}</p>
-                            <p>📊 ${completed}/4 (${Math.round(percent)}%)</p>
+                            <p>${new Date(this.currentUser.registrationDate).toLocaleDateString()}</p>
+                            <p>Прогресс: ${completed}/4 (${Math.round(percent)}%)</p>
                             <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
-                            <div class="achievement">${medalImg ? `<img src="${medalImg}" width="80">` : '📘 Нет достижений'}</div>
+                            <div class="achievement">${medalImg ? `<img src="${medalImg}" width="80">` : 'Нет достижений'}</div>
                             <div class="profile-buttons">
                                 <button class="btn-primary" onclick="App.showPage('tasks')">Задания</button>
                                 <button class="btn-secondary" onclick="App.showPage('main')">Главная</button>
@@ -889,19 +903,19 @@
                 }
                 let usersHtml = '';
                 for (const user of users) {
-                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</tr>`;
+                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td></tr>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
                         <div class="current-user-panel">
-                            <h3>👤 Текущий</h3>
+                            <h3>Текущий пользователь</h3>
                             <p>${this.currentUser ? this.currentUser.login : 'Не авторизован'}</p>
                             <p>${this.currentUser ? this.getCompletedCount() + '/4' : ''}</p>
                             ${this.currentUser ? '<button onclick="App.showPage(\'profile\')">Профиль</button>' : '<button onclick="App.showPage(\'login\')">Войти</button>'}
                         </div>
                         <div class="users-table">
-                            <h3 style="padding:10px; background:#333;">📋 Пользователи</h3>
+                            <h3 style="padding:10px; background:#333;">Все пользователи</h3>
                             <table style="width:100%"><thead><tr><th>Логин</th><th>Дата</th><th>Прогресс</th></tr></thead><tbody>${usersHtml}</tbody></table>
                         </div>
                         <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
