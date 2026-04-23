@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Лаборатория Курчатова</title>
+    <title>Лаборатория Курчатова - Вход</title>
     <style>
         * {
             margin: 0;
@@ -17,14 +17,15 @@
             background: #1a1a2e;
         }
 
+        /* Главный контейнер */
         .viewport {
             position: relative;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
             overflow: hidden;
         }
 
+        /* Фоновое изображение */
         .background {
             position: absolute;
             width: 100%;
@@ -33,6 +34,165 @@
             z-index: 0;
         }
 
+        /* Контейнер для формы входа */
+        .login-container {
+            position: absolute;
+            left: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            min-width: 350px;
+            z-index: 10;
+        }
+
+        .login-container h2 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            box-shadow: 0 0 5px #43e97b;
+        }
+
+        /* Контейнер для кнопок справа */
+        .buttons-container {
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .action-btn {
+            width: 200px;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+            opacity: 0.9;
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: #1a1a2e;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        /* Контейнер для формы регистрации */
+        .register-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .register-container h2 {
+            color: white;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .register-container .input-group {
+            text-align: left;
+        }
+
+        .register-container .input-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .register-container .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: #333;
+        }
+
+        .register-container .input-group input:focus {
+            outline: none;
+            box-shadow: 0 0 5px #43e97b;
+        }
+
+        .register-container button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: #1a1a2e;
+        }
+
+        .register-container button:active {
+            transform: scale(0.98);
+        }
+
+        .back-to-login {
+            margin-top: 20px;
+            background: transparent !important;
+            color: white !important;
+            border: 1px solid white !important;
+        }
+
+        /* Стили для основного интерфейса (после входа) */
         .ui-container {
             position: absolute;
             top: 0;
@@ -42,7 +202,6 @@
             z-index: 10;
         }
 
-        /* Ромбовидные кнопки */
         .diamond-btn {
             position: absolute;
             cursor: pointer;
@@ -59,7 +218,6 @@
             opacity: 0.9;
         }
 
-        /* Кнопка назад */
         .back-btn {
             position: absolute;
             cursor: pointer;
@@ -74,7 +232,6 @@
             opacity: 0.8;
         }
 
-        /* Координаты в процентах от 800x450 */
         .btn-users {
             left: 15.875%;
             top: 66.444%;
@@ -101,23 +258,18 @@
             background-size: contain !important;
         }
 
-        /* Адаптив для мобильных */
         @media (max-width: 768px) {
-            .btn-users, .btn-lessons, .btn-tasks {
-                width: 25%;
-                top: 65%;
-            }
+            .login-container { left: 5%; right: 5%; min-width: auto; width: 90%; }
+            .buttons-container { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: 100px; flex-direction: row; }
+            .action-btn { width: 150px; padding: 12px; font-size: 18px; }
+            .btn-users, .btn-lessons, .btn-tasks { width: 25%; top: 65%; }
             .btn-users { left: 8%; }
             .btn-lessons { left: 37%; }
             .btn-tasks { left: 66%; }
-            .btn-profile {
-                width: 15%;
-                left: 80%;
-                top: 85%;
-            }
+            .btn-profile { width: 15%; left: 80%; top: 85%; }
         }
 
-        /* Стили для страницы заданий - вертикальное меню слева */
+        /* Стили для остальных страниц */
         .tasks-container {
             position: absolute;
             left: 5%;
@@ -144,45 +296,6 @@
             transform: scale(0.95);
             opacity: 0.9;
         }
-
-        /* Стили для форм */
-        .form-container {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
-            padding: 5%;
-            border-radius: 20px;
-            min-width: 280px;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-            z-index: 10;
-            backdrop-filter: blur(10px);
-        }
-        .form-container h2 { color: white; margin-bottom: 20px; }
-        .form-container input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        .form-container button {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-primary { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
-        .btn-secondary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .btn-danger { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
 
         .question-box {
             position: absolute;
@@ -211,6 +324,7 @@
             font-size: 14px;
             border: 2px solid #667eea;
             border-radius: 8px;
+            background: white;
         }
         .check-btn {
             width: 120px;
@@ -395,7 +509,7 @@
     <script>
         // ============ КОНФИГУРАЦИЯ ============
         const PATHS = {
-            bgMain: 'images/image (1).jpeg',
+            bgMain: 'images/image (6).jpeg',
             bgLogin: 'images/image (6).jpeg',
             bgTasks: 'images/закат.png',
             bgTask: 'images/image (4).jpeg',
@@ -407,7 +521,6 @@
             bronzeMedal: 'images/бронза.png',
             silverMedal: 'images/серебро.png',
             goldMedal: 'images/золото.png',
-            // Картинки для заданий
             taskNotCompleted: {
                 1: 'images/неготово1.png',
                 2: 'images/неготово2.png',
@@ -419,7 +532,6 @@
                 2: 'images/Задание2.png',
                 3: 'images/Задание3.png'
             },
-            // Фоны для уроков
             lessonBackgrounds: {
                 1: 'images/урок кинематика.png',
                 2: 'images/урок сила тяжести.png',
@@ -447,7 +559,15 @@
         // ============ ПРИЛОЖЕНИЕ ============
         const App = {
             currentUser: null,
-            init() { this.loadCurrentUser(); this.showPage('main'); },
+            init() { 
+                this.loadCurrentUser(); 
+                // Если пользователь уже вошёл, показываем главное меню, иначе окно входа
+                if (this.currentUser) {
+                    this.showPage('main');
+                } else {
+                    this.showPage('login');
+                }
+            },
             loadCurrentUser() {
                 const saved = localStorage.getItem('LaboratoriaKurchatova_currentUser');
                 if (saved) {
@@ -476,18 +596,115 @@
             showPage(page, params = {}) {
                 const appDiv = document.getElementById('app');
                 switch(page) {
-                    case 'main': this.renderMainPage(appDiv); break;
                     case 'login': this.renderLoginPage(appDiv); break;
                     case 'register': this.renderRegisterPage(appDiv); break;
+                    case 'main': this.renderMainPage(appDiv); break;
                     case 'tasks': this.renderTasksPage(appDiv); break;
                     case 'lessons': this.renderLessonsPage(appDiv); break;
                     case 'profile': this.renderProfilePage(appDiv); break;
                     case 'users': this.renderUsersPage(appDiv); break;
                     case 'task': this.renderTaskPage(appDiv, params.taskId); break;
                     case 'lesson': this.renderLessonPage(appDiv, params.lessonId); break;
-                    default: this.renderMainPage(appDiv);
+                    default: this.renderLoginPage(appDiv);
                 }
             },
+            // ============ СТРАНИЦА ВХОДА ============
+            renderLoginPage(container) {
+                document.title = 'Вход - Лаборатория Курчатова';
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
+                        <div class="login-container">
+                            <h2>🔐 Вход в систему</h2>
+                            <div class="input-group">
+                                <label>Логин</label>
+                                <input type="text" id="loginInput" placeholder="Введите ваш логин">
+                            </div>
+                            <div class="input-group">
+                                <label>Пароль</label>
+                                <input type="password" id="passwordInput" placeholder="Введите пароль">
+                            </div>
+                        </div>
+                        <div class="buttons-container">
+                            <button class="action-btn btn-login" onclick="App.handleLogin()">🚪 Вход</button>
+                            <button class="action-btn btn-register" onclick="App.showPage('register')">📝 Регистрация</button>
+                        </div>
+                    </div>
+                `;
+            },
+            handleLogin() {
+                const login = document.getElementById('loginInput').value.trim();
+                const password = document.getElementById('passwordInput').value;
+                if (!login || !password) { 
+                    this.showToast('Введите логин и пароль!', 'error'); 
+                    return; 
+                }
+                const userData = localStorage.getItem(`LaboratoriaKurchatova_user_${login}`);
+                if (!userData) { 
+                    this.showToast('Пользователь не найден! Перейдите к регистрации.', 'error'); 
+                    return; 
+                }
+                const user = JSON.parse(userData);
+                if (user.password === password) {
+                    this.currentUser = user;
+                    const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${login}`);
+                    this.currentUser.completedTasks = progress ? JSON.parse(progress) : [];
+                    this.saveCurrentUser();
+                    this.showToast(`Добро пожаловать, ${login}!`, 'success');
+                    this.showPage('main');
+                } else { 
+                    this.showToast('Неверный пароль!', 'error'); 
+                }
+            },
+            // ============ СТРАНИЦА РЕГИСТРАЦИИ ============
+            renderRegisterPage(container) {
+                document.title = 'Регистрация - Лаборатория Курчатова';
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
+                        <div class="register-container">
+                            <h2>📝 Создание аккаунта</h2>
+                            <div class="input-group">
+                                <label>Введите логин</label>
+                                <input type="text" id="regLoginInput" placeholder="Придумайте логин">
+                            </div>
+                            <div class="input-group">
+                                <label>Придумайте пароль</label>
+                                <input type="password" id="regPasswordInput" placeholder="Пароль">
+                            </div>
+                            <div class="input-group">
+                                <label>Подтвердите пароль</label>
+                                <input type="password" id="regConfirmInput" placeholder="Повторите пароль">
+                            </div>
+                            <button onclick="App.handleRegister()">➕ Добавить пользователя</button>
+                            <button class="back-to-login" onclick="App.showPage('login')">← Назад ко входу</button>
+                        </div>
+                    </div>
+                `;
+            },
+            handleRegister() {
+                const login = document.getElementById('regLoginInput').value.trim();
+                const password = document.getElementById('regPasswordInput').value;
+                const confirm = document.getElementById('regConfirmInput').value;
+                if (!login || !password) { 
+                    this.showToast('Заполните все поля!', 'error'); 
+                    return; 
+                }
+                if (password !== confirm) { 
+                    this.showToast('Пароли не совпадают!', 'error'); 
+                    return; 
+                }
+                if (localStorage.getItem(`LaboratoriaKurchatova_user_${login}`)) { 
+                    this.showToast('Пользователь уже существует!', 'error'); 
+                    return; 
+                }
+                const newUser = { login, password, registrationDate: new Date().toISOString(), avatarPath: null };
+                localStorage.setItem(`LaboratoriaKurchatova_user_${login}`, JSON.stringify(newUser));
+                localStorage.setItem(`LaboratoriaKurchatova_progress_${login}`, JSON.stringify([]));
+                this.showToast('Регистрация успешна! Теперь войдите.', 'success');
+                this.showPage('login');
+            },
+            // ============ ГЛАВНОЕ МЕНЮ ============
             renderMainPage(container) {
                 const completed = this.getCompletedCount();
                 document.title = this.currentUser ? `Курчатова - ${this.currentUser.login} (${completed}/4)` : 'Лаборатория Курчатова';
@@ -503,66 +720,7 @@
                     </div>
                 `;
             },
-            renderLoginPage(container) {
-                container.innerHTML = `
-                    <div class="viewport">
-                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
-                        <div class="form-container">
-                            <h2>🔐 Вход</h2>
-                            <input type="text" id="loginInput" placeholder="Логин">
-                            <input type="password" id="passwordInput" placeholder="Пароль">
-                            <button class="btn-primary" onclick="App.login()">Войти</button>
-                            <button class="btn-secondary" onclick="App.showPage('register')">Регистрация</button>
-                            <button class="btn-danger" onclick="App.showPage('main')">Назад</button>
-                        </div>
-                    </div>
-                `;
-            },
-            login() {
-                const login = document.getElementById('loginInput').value.trim();
-                const password = document.getElementById('passwordInput').value;
-                if (!login || !password) { this.showToast('Введите логин и пароль!', 'error'); return; }
-                const userData = localStorage.getItem(`LaboratoriaKurchatova_user_${login}`);
-                if (!userData) { this.showToast('Пользователь не найден!', 'error'); return; }
-                const user = JSON.parse(userData);
-                if (user.password === password) {
-                    this.currentUser = user;
-                    const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${login}`);
-                    this.currentUser.completedTasks = progress ? JSON.parse(progress) : [];
-                    this.saveCurrentUser();
-                    this.showToast(`Добро пожаловать, ${login}!`, 'success');
-                    this.showPage('main');
-                } else { this.showToast('Неверный пароль!', 'error'); }
-            },
-            renderRegisterPage(container) {
-                container.innerHTML = `
-                    <div class="viewport">
-                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
-                        <div class="form-container">
-                            <h2>📝 Регистрация</h2>
-                            <input type="text" id="regLoginInput" placeholder="Логин">
-                            <input type="password" id="regPasswordInput" placeholder="Пароль">
-                            <input type="password" id="regConfirmInput" placeholder="Повторите пароль">
-                            <button class="btn-primary" onclick="App.register()">Зарегистрироваться</button>
-                            <button class="btn-secondary" onclick="App.showPage('login')">Вход</button>
-                            <button class="btn-danger" onclick="App.showPage('main')">Назад</button>
-                        </div>
-                    </div>
-                `;
-            },
-            register() {
-                const login = document.getElementById('regLoginInput').value.trim();
-                const password = document.getElementById('regPasswordInput').value;
-                const confirm = document.getElementById('regConfirmInput').value;
-                if (!login || !password) { this.showToast('Заполните поля!', 'error'); return; }
-                if (password !== confirm) { this.showToast('Пароли не совпадают!', 'error'); return; }
-                if (localStorage.getItem(`LaboratoriaKurchatova_user_${login}`)) { this.showToast('Пользователь существует!', 'error'); return; }
-                const newUser = { login, password, registrationDate: new Date().toISOString(), avatarPath: null };
-                localStorage.setItem(`LaboratoriaKurchatova_user_${login}`, JSON.stringify(newUser));
-                localStorage.setItem(`LaboratoriaKurchatova_progress_${login}`, JSON.stringify([]));
-                this.showToast('Регистрация успешна!', 'success');
-                this.showPage('login');
-            },
+            // ============ ЗАДАНИЯ ============
             renderTasksPage(container) {
                 let tasksHtml = '';
                 for (let i = 1; i <= 4; i++) {
@@ -578,9 +736,7 @@
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTasks}" onerror="this.style.display='none'">
-                        <div class="tasks-container">
-                            ${tasksHtml}
-                        </div>
+                        <div class="tasks-container">${tasksHtml}</div>
                         <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                     </div>
                 `;
@@ -640,6 +796,7 @@
                     modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? '🎉' : '😢'}</div><div style="font-size:24px; margin-top:20px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
                 };
             },
+            // ============ УРОКИ ============
             renderLessonsPage(container) {
                 let lessonsHtml = '';
                 for (let i = 1; i <= 4; i++) {
@@ -660,8 +817,6 @@
                 `;
             },
             renderLessonPage(container, lessonId) {
-                const lesson = LESSONS[lessonId];
-                if (!lesson) { this.showPage('lessons'); return; }
                 const backgroundImage = PATHS.lessonBackgrounds[lessonId];
                 container.innerHTML = `
                     <div class="viewport">
@@ -672,6 +827,7 @@
                     </div>
                 `;
             },
+            // ============ ПРОФИЛЬ ============
             renderProfilePage(container) {
                 if (!this.currentUser) { this.showPage('login'); return; }
                 const completed = this.getCompletedCount();
@@ -718,6 +874,7 @@
                 };
                 input.click();
             },
+            // ============ ПОЛЬЗОВАТЕЛИ ============
             renderUsersPage(container) {
                 const users = [];
                 for (let i = 0; i < localStorage.length; i++) {
@@ -731,7 +888,7 @@
                 }
                 let usersHtml = '';
                 for (const user of users) {
-                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td>起飞`;
+                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td></td>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
@@ -769,8 +926,8 @@
             logout() {
                 this.currentUser = null;
                 localStorage.removeItem('LaboratoriaKurchatova_currentUser');
-                this.showToast('Вы вышли', 'success');
-                this.showPage('main');
+                this.showToast('Вы вышли из системы', 'success');
+                this.showPage('login');
             }
         };
 
