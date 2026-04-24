@@ -279,8 +279,8 @@
         .question-box {
             position: absolute;
             left: 8%;
-            top: 15%;
-            width: 40%;
+            top: 12%;
+            width: 35%;
             color: white;
             font-size: 18px;
             line-height: 1.6;
@@ -292,11 +292,11 @@
         
         .task-number-image {
             position: absolute;
-            right: 5%;
+            right: 8%;
             top: 50%;
             transform: translateY(-50%);
-            width: 35%;
-            max-width: 300px;
+            width: 30%;
+            max-width: 250px;
             z-index: 10;
         }
         
@@ -347,6 +347,28 @@
             opacity: 0.9;
         }
         .completed-msg { font-size: 18px; color: #43e97b; margin-top: 10px; font-weight: bold; }
+
+        .completed-task4-btn {
+            position: absolute;
+            right: 8%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30%;
+            max-width: 250px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            border: none;
+            background: transparent;
+            z-index: 10;
+        }
+        .completed-task4-btn img {
+            width: 100%;
+            height: auto;
+        }
+        .completed-task4-btn:active {
+            transform: translateY(-50%) scale(0.95);
+            opacity: 0.9;
+        }
 
         /* Стили для навигации по урокам */
         .lesson-nav {
@@ -421,22 +443,6 @@
         .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
         .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .users-table {
-            position: absolute;
-            right: 5%;
-            top: 20%;
-            width: 90%;
-            max-width: 400px;
-            background: rgba(0,0,0,0.85);
-            border-radius: 10px;
-            overflow-x: auto;
-        }
-        .users-table table { width: 100%; color: white; border-collapse: collapse; }
-        .users-table th, .users-table td { padding: 10px; text-align: left; border-bottom: 1px solid #444; }
-        .users-table th { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .user-row { cursor: pointer; }
-        .user-row:hover { background: rgba(102, 126, 234, 0.3); }
-
         .current-user-panel {
             position: absolute;
             left: 5%;
@@ -510,7 +516,7 @@
             .task-btn { width: 150px; height: 150px; }
             
             .question-box { width: 90%; left: 5%; top: 10%; font-size: 14px; }
-            .task-number-image { width: 60%; right: 20%; top: 30%; }
+            .task-number-image { width: 50%; right: 25%; top: 30%; max-width: 200px; }
             .answer-area { left: 5%; bottom: 10%; }
             .answer-input { width: 180px; }
             .check-btn { width: 100px; height: 45px; background-size: contain; background-repeat: no-repeat; }
@@ -520,7 +526,6 @@
             .nav-btn { width: 60px; }
             
             .current-user-panel { top: auto; bottom: 80px; left: 10px; right: 10px; }
-            .users-table { top: auto; bottom: 200px; left: 10px; right: 10px; width: auto; }
             
             .profile-buttons button { padding: 8px 12px; font-size: 12px; }
         }
@@ -528,7 +533,7 @@
         @media (max-width: 480px) {
             .task-btn { width: 100px; height: 100px; }
             .question-box { font-size: 12px; }
-            .task-number-image { width: 50%; right: 25%; top: 25%; }
+            .task-number-image { width: 45%; right: 27%; top: 25%; max-width: 150px; }
         }
     </style>
 </head>
@@ -559,6 +564,7 @@
                 3: 'images/третья.png',
                 4: 'images/четвёртая.png'
             },
+            taskCompleted4: 'images/Задание4.png',
             bronzeMedal: 'images/бронза.png',
             silverMedal: 'images/серебро.png',
             goldMedal: 'images/золото.png',
@@ -639,7 +645,6 @@
                     case 'tasks': this.renderTasksPage(appDiv); break;
                     case 'lessons': this.renderLessonPage(appDiv, this.currentLesson); break;
                     case 'profile': this.renderProfilePage(appDiv); break;
-                    case 'users': this.renderUsersPage(appDiv); break;
                     case 'task': this.renderTaskPage(appDiv, params.taskId); break;
                     default: this.renderLoginPage(appDiv);
                 }
@@ -754,7 +759,7 @@
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgMain}" onerror="this.style.display='none'">
                         <div class="ui-container">
-                            <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('users')"></button>
+                            <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('profile')"></button>
                             <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.startLessons()"></button>
                             <button class="diamond-btn btn-tasks" style="background-image: url('${PATHS.btnTasks}')" onclick="App.showPage('tasks')"></button>
                             <button class="back-btn btn-profile" style="background-image: url('${PATHS.btnBack}')" onclick="App.showPage('profile')"></button>
@@ -804,7 +809,9 @@
                 for (let i = 1; i <= 4; i++) {
                     const isCompleted = this.isTaskCompleted(i);
                     let imgUrl;
-                    if (isCompleted && i !== 4) {
+                    if (isCompleted && i === 4) {
+                        imgUrl = PATHS.taskCompleted4;
+                    } else if (isCompleted && i !== 4) {
                         imgUrl = PATHS.taskCompleted[i];
                     } else {
                         imgUrl = PATHS.taskNotCompleted[i];
@@ -823,13 +830,27 @@
                 const task = TASKS[taskId];
                 if (!task) { this.showPage('tasks'); return; }
                 const isCompleted = this.isTaskCompleted(taskId);
+                
+                let imageSection = '';
+                if (isCompleted && taskId === 4) {
+                    imageSection = `
+                        <button class="completed-task4-btn" onclick="App.showPage('tasks')">
+                            <img src="${PATHS.taskCompleted4}" alt="Задание 4 выполнено">
+                        </button>
+                    `;
+                } else {
+                    imageSection = `
+                        <div class="task-number-image">
+                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}" style="transform: scale(5); transform-origin: center;">
+                        </div>
+                    `;
+                }
+                
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
                         <div class="question-box"><strong>Задание ${taskId}</strong><br><br>${task.question}</div>
-                        <div class="task-number-image">
-                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}" style="transform: scale(6); transform-origin: center;">
-                        </div>
+                        ${imageSection}
                         <div class="answer-area">
                             <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
                             <button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>
@@ -857,7 +878,11 @@
                     }
                     this.playVideo(videoFolder, 'верно');
                     setTimeout(() => {
-                        this.renderTasksPage(document.getElementById('app'));
+                        if (taskId === 4) {
+                            this.showPage('tasks');
+                        } else {
+                            this.renderTasksPage(document.getElementById('app'));
+                        }
                     }, 500);
                 } else {
                     this.showToast('Неправильно. Попробуйте ещё раз!', 'error');
@@ -923,48 +948,6 @@
                     }
                 };
                 input.click();
-            },
-            // ============ ПОЛЬЗОВАТЕЛИ ============
-            renderUsersPage(container) {
-                const users = [];
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && key.startsWith('LaboratoriaKurchatova_user_')) {
-                        const user = JSON.parse(localStorage.getItem(key));
-                        const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${user.login}`);
-                        user.completedCount = progress ? JSON.parse(progress).length : 0;
-                        users.push(user);
-                    }
-                }
-                let usersHtml = '';
-                for (const user of users) {
-                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td></tr>`;
-                }
-                container.innerHTML = `
-                    <div class="viewport">
-                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
-                        <div class="current-user-panel">
-                            <h3>Текущий пользователь</h3>
-                            <p>${this.currentUser ? this.currentUser.login : 'Не авторизован'}</p>
-                            <p>${this.currentUser ? this.getCompletedCount() + '/4' : ''}</p>
-                            ${this.currentUser ? '<button onclick="App.showPage(\'profile\')">Профиль</button>' : '<button onclick="App.showPage(\'login\')">Войти</button>'}
-                        </div>
-                        <div class="users-table">
-                            <h3 style="padding:10px; background:#333;">Все пользователи</h3>
-                            <table style="width:100%"><thead><tr><th>Логин</th><th>Дата</th><th>Прогресс</th></tr></thead><tbody>${usersHtml}</tbody></table>
-                        </div>
-                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
-                    </div>
-                `;
-            },
-            selectUser(login) {
-                const userData = localStorage.getItem(`LaboratoriaKurchatova_user_${login}`);
-                if (userData) {
-                    const user = JSON.parse(userData);
-                    const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${login}`);
-                    const completed = progress ? JSON.parse(progress).length : 0;
-                    alert(`Пользователь: ${login}\nДата: ${new Date(user.registrationDate).toLocaleDateString()}\nПрогресс: ${completed}/4`);
-                }
             },
             showToast(text, type) {
                 const toast = document.createElement('div');
