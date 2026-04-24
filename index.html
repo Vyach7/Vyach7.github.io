@@ -278,9 +278,9 @@
 
         .question-box {
             position: absolute;
-            left: 8%;
-            top: 12%;
-            width: 35%;
+            left: 5%;
+            top: 10%;
+            width: 28%;
             color: white;
             font-size: 18px;
             line-height: 1.6;
@@ -292,10 +292,10 @@
         
         .task-number-image {
             position: absolute;
-            left: 43%;
-            top: 12%;
-            width: 21.4%;
-            max-width: 178px;
+            left: 34%;
+            top: 10%;
+            width: 51%;
+            max-width: 700px;
             z-index: 10;
         }
         
@@ -306,7 +306,7 @@
         
         .answer-area {
             position: absolute;
-            left: 8%;
+            left: 5%;
             bottom: 15%;
             z-index: 10;
             display: flex;
@@ -330,12 +330,13 @@
         }
         .next-task-btn {
             position: absolute;
-            right: 5%;
+            right: 2%;
             bottom: 8%;
             cursor: pointer;
             border: none;
             background: transparent;
             width: 100px;
+            z-index: 15;
         }
         .next-task-btn img {
             width: 100%;
@@ -346,27 +347,6 @@
             opacity: 0.9;
         }
         .completed-msg { font-size: 18px; color: #43e97b; margin-top: 10px; font-weight: bold; }
-
-        .completed-task4-btn {
-            position: absolute;
-            left: 43%;
-            top: 12%;
-            width: 21.4%;
-            max-width: 178px;
-            cursor: pointer;
-            transition: transform 0.1s, opacity 0.1s;
-            border: none;
-            background: transparent;
-            z-index: 10;
-        }
-        .completed-task4-btn img {
-            width: 100%;
-            height: auto;
-        }
-        .completed-task4-btn:active {
-            transform: scale(0.95);
-            opacity: 0.9;
-        }
 
         /* Стили для навигации по урокам */
         .lesson-nav {
@@ -513,13 +493,12 @@
             .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: column; align-items: center; gap: 15px; }
             .task-btn { width: 150px; height: 150px; }
             
-            .question-box { width: 90%; left: 5%; top: 8%; font-size: 14px; }
-            .task-number-image { width: 40%; left: 30%; top: 35%; max-width: 120px; }
-            .completed-task4-btn { width: 40%; left: 30%; top: 35%; max-width: 120px; }
-            .answer-area { left: 5%; bottom: 10%; }
+            .question-box { width: 40%; left: 3%; top: 8%; font-size: 14px; padding: 15px; }
+            .task-number-image { width: 50%; left: 44%; top: 8%; }
+            .answer-area { left: 3%; bottom: 10%; }
             .answer-input { width: 180px; }
             .check-btn { width: 100px; height: 45px; background-size: contain; background-repeat: no-repeat; }
-            .next-task-btn { bottom: 5%; right: 5%; width: 70px; }
+            .next-task-btn { bottom: 5%; right: 2%; width: 70px; }
             
             .lesson-nav { bottom: 15px; gap: 20px; }
             .nav-btn { width: 60px; }
@@ -531,9 +510,8 @@
 
         @media (max-width: 480px) {
             .task-btn { width: 100px; height: 100px; }
-            .question-box { font-size: 12px; }
-            .task-number-image { width: 35%; left: 33%; top: 30%; max-width: 100px; }
-            .completed-task4-btn { width: 35%; left: 33%; top: 30%; max-width: 100px; }
+            .question-box { width: 90%; left: 5%; top: 5%; font-size: 12px; position: relative; margin-bottom: 10px; }
+            .task-number-image { width: 80%; left: 10%; top: auto; margin-top: 10px; position: relative; }
         }
     </style>
 </head>
@@ -564,7 +542,6 @@
                 3: 'images/третья.png',
                 4: 'images/четвёртая.png'
             },
-            taskCompleted4: 'images/Задание4.png',
             bronzeMedal: 'images/бронза.png',
             silverMedal: 'images/серебро.png',
             goldMedal: 'images/золото.png',
@@ -577,7 +554,8 @@
             taskCompleted: {
                 1: 'images/Задание1.png',
                 2: 'images/Задание2.png',
-                3: 'images/Задание3.png'
+                3: 'images/Задание3.png',
+                4: 'images/Задание4.png'
             },
             lessonBackgrounds: {
                 1: 'images/урок кинематика.png',
@@ -809,9 +787,7 @@
                 for (let i = 1; i <= 4; i++) {
                     const isCompleted = this.isTaskCompleted(i);
                     let imgUrl;
-                    if (isCompleted && i === 4) {
-                        imgUrl = PATHS.taskCompleted4;
-                    } else if (isCompleted && i !== 4) {
+                    if (isCompleted) {
                         imgUrl = PATHS.taskCompleted[i];
                     } else {
                         imgUrl = PATHS.taskNotCompleted[i];
@@ -831,31 +807,18 @@
                 if (!task) { this.showPage('tasks'); return; }
                 const isCompleted = this.isTaskCompleted(taskId);
                 
-                let imageSection = '';
-                if (isCompleted && taskId === 4) {
-                    imageSection = `
-                        <button class="completed-task4-btn" onclick="App.showPage('tasks')">
-                            <img src="${PATHS.taskCompleted4}" alt="Задание 4 выполнено">
-                        </button>
-                    `;
-                } else {
-                    imageSection = `
-                        <div class="task-number-image">
-                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}">
-                        </div>
-                    `;
-                }
-                
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
                         <div class="question-box"><strong>Задание ${taskId}</strong><br><br>${task.question}</div>
-                        ${imageSection}
+                        <div class="task-number-image">
+                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}">
+                        </div>
                         <div class="answer-area">
                             <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
                             <button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>
                         </div>
-                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:8%; bottom:5%;">Задание выполнено!</div>' : ''}
+                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:5%; bottom:8%;">Задание выполнено!</div>' : ''}
                         <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
                         ${taskId < 4 ? `<button class="next-task-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})"><img src="${PATHS.btnNext}" alt="След"></button>` : ''}
                     </div>
@@ -878,11 +841,7 @@
                     }
                     this.playVideo(videoFolder, 'верно');
                     setTimeout(() => {
-                        if (taskId === 4) {
-                            this.showPage('tasks');
-                        } else {
-                            this.renderTasksPage(document.getElementById('app'));
-                        }
+                        this.showPage('tasks');
                     }, 500);
                 } else {
                     this.showToast('Неправильно. Попробуйте ещё раз!', 'error');
