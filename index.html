@@ -353,17 +353,15 @@
             height: 106px !important;
         }
 
-        .back-btn-mobile {
+        .back-btn-tasks-mobile {
             display: none;
             position: absolute;
             cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             border: none;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 10px 15px;
-            font-size: 14px;
             z-index: 15;
         }
 
@@ -395,6 +393,24 @@
         .nav-btn:active {
             transform: scale(0.95);
             opacity: 0.9;
+        }
+
+        .lesson-image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .lesson-image-container img {
+            max-width: 90%;
+            max-height: 70%;
+            object-fit: contain;
         }
 
         .profile-container {
@@ -523,15 +539,23 @@
             
             .back-btn-task { width: 130px !important; height: 80px !important; }
             
-            .back-btn-mobile {
+            .back-btn-tasks-mobile {
                 display: block;
                 left: 10px;
                 top: 10px;
+                width: 87px;
+                height: 53px;
+            }
+
+            .lesson-image-container img {
+                max-width: 95%;
+                max-height: 50%;
+                margin-bottom: 100px;
             }
 
             .lesson-nav {
                 bottom: 20px;
-                gap: 30px;
+                gap: 20px;
             }
             .nav-btn { width: 80px; }
             
@@ -554,10 +578,14 @@
             .check-btn { width: 80px; height: 40px; }
             .next-task-btn { width: 100px; }
             .back-btn-task { width: 110px !important; height: 67px !important; }
-            .back-btn-mobile { left: 5px; top: 5px; padding: 8px 12px; font-size: 12px; }
-            .lesson-nav { bottom: 15px; gap: 20px; }
-            .nav-btn { width: 60px; }
+            .back-btn-tasks-mobile { left: 5px; top: 5px; width: 70px; height: 42px; }
+            .lesson-nav { bottom: 15px; gap: 30px; }
+            .nav-btn { width: 70px; }
             .lesson-back-btn { width: 80px !important; height: 50px !important; }
+            .lesson-image-container img {
+                max-height: 40%;
+                margin-bottom: 120px;
+            }
         }
     </style>
 </head>
@@ -804,12 +832,14 @@
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
-                        <img class="background" src="${backgroundImage}" style="position:absolute; width:100%; height:100%; object-fit:contain; z-index:1;" onerror="this.style.display='none'">
+                        <div class="lesson-image-container">
+                            <img src="${backgroundImage}" alt="${lessonName}" onerror="this.style.display='none'">
+                        </div>
                         <div class="lesson-nav" style="z-index:20;">
                             ${hasPrev ? `<button class="nav-btn" onclick="App.prevLesson()"><img src="${PATHS.btnPrev}" alt="Назад"></button>` : '<div style="width:100px;"></div>'}
                             ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
                         </div>
-                        <div style="position:absolute; top:80px; left:20px; z-index:20;">
+                        <div style="position:absolute; top:20px; left:20px; z-index:20;">
                             <button class="back-btn lesson-back-btn" style="background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                         </div>
                     </div>
@@ -845,7 +875,7 @@
                         <img class="background" src="${PATHS.bgTasks}" onerror="this.style.display='none'">
                         <div class="tasks-container">${tasksHtml}</div>
                         <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
-                        <button class="back-btn-mobile" onclick="App.showPage('main')">← На главную</button>
+                        <button class="back-btn-tasks-mobile" style="background-image:url('${PATHS.btnBack}');" onclick="App.showPage('main')"></button>
                     </div>
                 `;
             },
