@@ -282,7 +282,7 @@
             top: 10%;
             width: 28%;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.6;
             background: rgba(0,0,0,0.6);
             padding: 20px;
@@ -365,19 +365,34 @@
             z-index: 15;
         }
 
-        /* Стили для навигации по урокам */
-        .lesson-nav {
+        /* Стили для уроков */
+        .lesson-content {
             position: absolute;
-            bottom: 30px;
+            top: 0;
             left: 0;
-            right: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            z-index: 1;
+        }
+
+        .lesson-image {
+            max-width: 90%;
+            max-height: 70%;
+            object-fit: contain;
+        }
+
+        .lesson-navigation {
+            display: flex;
             gap: 50px;
+            margin-top: 20px;
             z-index: 20;
         }
 
-        .nav-btn {
+        .lesson-nav-btn {
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
             border: none;
@@ -385,32 +400,14 @@
             width: 100px;
         }
 
-        .nav-btn img {
+        .lesson-nav-btn img {
             width: 100%;
             height: auto;
         }
 
-        .nav-btn:active {
+        .lesson-nav-btn:active {
             transform: scale(0.95);
             opacity: 0.9;
-        }
-
-        .lesson-image-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-
-        .lesson-image-container img {
-            max-width: 90%;
-            max-height: 70%;
-            object-fit: contain;
         }
 
         .profile-container {
@@ -455,19 +452,6 @@
         }
         .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
         .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-        .current-user-panel {
-            position: absolute;
-            left: 5%;
-            top: 10%;
-            background: rgba(0,0,0,0.85);
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
-            min-width: 200px;
-            max-width: 280px;
-        }
-        .current-user-panel button { margin-top: 10px; padding: 8px 15px; background: #43e97b; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
 
         .video-modal {
             position: fixed;
@@ -530,7 +514,7 @@
             .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: column; align-items: center; gap: 15px; }
             .task-btn { width: 150px; height: 150px; }
             
-            .question-box { width: 90%; left: 5%; top: 8%; font-size: 14px; padding: 12px; }
+            .question-box { width: 90%; left: 5%; top: 8%; font-size: 13px; padding: 12px; }
             .task-number-image { width: 70%; left: 15%; top: 38%; }
             .answer-area { left: 5%; bottom: 22%; }
             .answer-input { width: 150px; padding: 10px; }
@@ -547,19 +531,16 @@
                 height: 53px;
             }
 
-            .lesson-image-container img {
+            .lesson-image {
                 max-width: 95%;
                 max-height: 50%;
-                margin-bottom: 100px;
             }
 
-            .lesson-nav {
-                bottom: 20px;
-                gap: 20px;
+            .lesson-navigation {
+                gap: 30px;
+                margin-top: 15px;
             }
-            .nav-btn { width: 80px; }
-            
-            .current-user-panel { top: auto; bottom: 80px; left: 10px; right: 10px; }
+            .lesson-nav-btn { width: 80px; }
             
             .profile-buttons button { padding: 8px 12px; font-size: 12px; }
 
@@ -571,7 +552,7 @@
 
         @media (max-width: 480px) {
             .task-btn { width: 100px; height: 100px; }
-            .question-box { width: 90%; left: 5%; top: 12%; font-size: 12px; padding: 10px; }
+            .question-box { width: 90%; left: 5%; top: 12%; font-size: 11px; padding: 10px; }
             .task-number-image { width: 65%; left: 17%; top: 36%; }
             .answer-area { left: 5%; bottom: 25%; gap: 10px; }
             .answer-input { width: 130px; padding: 8px; font-size: 14px; }
@@ -579,13 +560,10 @@
             .next-task-btn { width: 100px; }
             .back-btn-task { width: 110px !important; height: 67px !important; }
             .back-btn-tasks-mobile { left: 5px; top: 5px; width: 70px; height: 42px; }
-            .lesson-nav { bottom: 15px; gap: 30px; }
-            .nav-btn { width: 70px; }
+            .lesson-navigation { gap: 20px; }
+            .lesson-nav-btn { width: 70px; }
             .lesson-back-btn { width: 80px !important; height: 50px !important; }
-            .lesson-image-container img {
-                max-height: 40%;
-                margin-bottom: 120px;
-            }
+            .lesson-image { max-height: 45%; }
         }
     </style>
 </head>
@@ -641,10 +619,10 @@
 
         // ============ ЗАДАНИЯ ============
         const TASKS = {
-            1: { question: "Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
-            2: { question: "Fтр = 200000 Н, масса 5 т, g = 10 м/с². Найдите коэффициент трения.", answer: "4", videoFolder: "N2video" },
-            3: { question: "Начальная скорость 10 м/с, время полёта 2 с, g = 10 м/с². Найдите скорость у кольца.", answer: "10", videoFolder: "N3video" },
-            4: { question: "Высота 20 м, масса 2 т, g = 10 м/с². Найдите работу крана.", answer: "400000", videoFolder: "N4video" }
+            1: { question: "Кролик бежит в норку. Ему осталось бежать 240 метров, его скорость 16 метров в секунду. Рассчитайте время, за которое кролик добежит до норки.", answer: "15", videoFolder: "N1video" },
+            2: { question: "Баскетболист тренируется и подбрасывает мяч вверх. Определите массу мяча, если сила тяжести равна 50 Н (ускорение свободного падения примите за 10).", answer: "5", videoFolder: "N2video" },
+            3: { question: "Водитель автобуса едет поздно ночью по дороге и не замечает впереди стоящую машину. Вычислите коэффициент трения, если Fтр = 2000 кН, а масса автобуса равна 50 т (g = 10).", answer: "4", videoFolder: "N3video" },
+            4: { question: "Строительный кран поднимает груз. Определите работу, совершаемую краном, если сила равна 4000 Н, а расстояние, на которое поднимают груз, равно 10 метров.", answer: "40000", videoFolder: "N4video" }
         };
 
         // ============ УРОКИ ============
@@ -832,12 +810,12 @@
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
-                        <div class="lesson-image-container">
-                            <img src="${backgroundImage}" alt="${lessonName}" onerror="this.style.display='none'">
-                        </div>
-                        <div class="lesson-nav" style="z-index:20;">
-                            ${hasPrev ? `<button class="nav-btn" onclick="App.prevLesson()"><img src="${PATHS.btnPrev}" alt="Назад"></button>` : '<div style="width:100px;"></div>'}
-                            ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
+                        <div class="lesson-content">
+                            <img src="${backgroundImage}" alt="${lessonName}" class="lesson-image" onerror="this.style.display='none'">
+                            <div class="lesson-navigation">
+                                ${hasPrev ? `<button class="lesson-nav-btn" onclick="App.prevLesson()"><img src="${PATHS.btnPrev}" alt="Назад"></button>` : '<div style="width:100px;"></div>'}
+                                ${hasNext ? `<button class="lesson-nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
+                            </div>
                         </div>
                         <div style="position:absolute; top:20px; left:20px; z-index:20;">
                             <button class="back-btn lesson-back-btn" style="background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
