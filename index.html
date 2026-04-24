@@ -120,7 +120,7 @@
         /* Стили для страницы заданий - вертикальное меню слева */
         .tasks-container {
             position: absolute;
-            left: 100px;
+            left: 5%;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
@@ -130,8 +130,8 @@
         }
 
         .task-btn {
-            width: 180px;
-            height: 180px;
+            width: 240px;
+            height: 240px;
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
             background-size: contain;
@@ -276,6 +276,35 @@
         .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
         .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
+        .users-table {
+            position: absolute;
+            right: 5%;
+            top: 20%;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(0,0,0,0.9);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+        .users-table table { width: 100%; color: white; border-collapse: collapse; }
+        .users-table th, .users-table td { padding: 10px; text-align: left; border-bottom: 1px solid #444; }
+        .users-table th { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .user-row { cursor: pointer; }
+        .user-row:hover { background: rgba(102, 126, 234, 0.3); }
+
+        .current-user-panel {
+            position: absolute;
+            left: 5%;
+            top: 20%;
+            background: rgba(0,0,0,0.85);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            min-width: 200px;
+            max-width: 280px;
+        }
+        .current-user-panel button { margin-top: 10px; padding: 8px 15px; background: #43e97b; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
         .lessons-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
@@ -353,8 +382,10 @@
             .answer-area { left: 10%; bottom: 10%; flex-direction: column; align-items: flex-start; }
             .check-btn { margin-top: 10px; }
             .next-btn { bottom: 10px; right: 10px; padding: 8px 16px; font-size: 12px; }
+            .users-table { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
+            .current-user-panel { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
             .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center; }
-            .task-btn { width: 100px; height: 100px; }
+            .task-btn { width: 120px; height: 120px; }
         }
     </style>
 </head>
@@ -386,8 +417,7 @@
             taskCompleted: {
                 1: 'images/Задание1.png',
                 2: 'images/Задание2.png',
-                3: 'images/Задание3.png',
-                4: 'images/Задание4.png'
+                3: 'images/Задание3.png'
             },
             // Фоны для уроков
             lessonBackgrounds: {
@@ -452,6 +482,7 @@
                     case 'tasks': this.renderTasksPage(appDiv); break;
                     case 'lessons': this.renderLessonsPage(appDiv); break;
                     case 'profile': this.renderProfilePage(appDiv); break;
+                    case 'users': this.renderUsersPage(appDiv); break;
                     case 'task': this.renderTaskPage(appDiv, params.taskId); break;
                     case 'lesson': this.renderLessonPage(appDiv, params.lessonId); break;
                     default: this.renderMainPage(appDiv);
@@ -464,7 +495,7 @@
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgMain}" onerror="this.style.display='none'">
                         <div class="ui-container">
-                            <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('profile')"></button>
+                            <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('users')"></button>
                             <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.showPage('lessons')"></button>
                             <button class="diamond-btn btn-tasks" style="background-image: url('${PATHS.btnTasks}')" onclick="App.showPage('tasks')"></button>
                             <button class="back-btn btn-profile" style="background-image: url('${PATHS.btnBack}')" onclick="App.showPage('profile')"></button>
@@ -537,7 +568,7 @@
                 for (let i = 1; i <= 4; i++) {
                     const isCompleted = this.isTaskCompleted(i);
                     let imgUrl;
-                    if (isCompleted) {
+                    if (isCompleted && i !== 4) {
                         imgUrl = PATHS.taskCompleted[i];
                     } else {
                         imgUrl = PATHS.taskNotCompleted[i];
@@ -686,6 +717,47 @@
                     }
                 };
                 input.click();
+            },
+            renderUsersPage(container) {
+                const users = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('LaboratoriaKurchatova_user_')) {
+                        const user = JSON.parse(localStorage.getItem(key));
+                        const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${user.login}`);
+                        user.completedCount = progress ? JSON.parse(progress).length : 0;
+                        users.push(user);
+                    }
+                }
+                let usersHtml = '';
+                for (const user of users) {
+                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td>起飞`;
+                }
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
+                        <div class="current-user-panel">
+                            <h3>👤 Текущий</h3>
+                            <p>${this.currentUser ? this.currentUser.login : 'Не авторизован'}</p>
+                            <p>${this.currentUser ? this.getCompletedCount() + '/4' : ''}</p>
+                            ${this.currentUser ? '<button onclick="App.showPage(\'profile\')">Профиль</button>' : '<button onclick="App.showPage(\'login\')">Войти</button>'}
+                        </div>
+                        <div class="users-table">
+                            <h3 style="padding:10px; background:#333;">📋 Пользователи</h3>
+                            <table style="width:100%"><thead><tr><th>Логин</th><th>Дата</th><th>Прогресс</th></tr></thead><tbody>${usersHtml}</tbody></table>
+                        </div>
+                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                    </div>
+                `;
+            },
+            selectUser(login) {
+                const userData = localStorage.getItem(`LaboratoriaKurchatova_user_${login}`);
+                if (userData) {
+                    const user = JSON.parse(userData);
+                    const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${login}`);
+                    const completed = progress ? JSON.parse(progress).length : 0;
+                    alert(`Пользователь: ${login}\nДата: ${new Date(user.registrationDate).toLocaleDateString()}\nПрогресс: ${completed}/4`);
+                }
             },
             showToast(text, type) {
                 const toast = document.createElement('div');
