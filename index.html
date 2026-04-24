@@ -17,7 +17,6 @@
             background: #1a1a2e;
         }
 
-        /* Главный контейнер */
         .viewport {
             position: relative;
             width: 100vw;
@@ -25,7 +24,6 @@
             overflow: hidden;
         }
 
-        /* Фоновое изображение */
         .background {
             position: absolute;
             width: 100%;
@@ -34,17 +32,16 @@
             z-index: 0;
         }
 
-        /* Контейнер для формы входа */
+        /* Стили для страницы входа */
         .login-container {
             position: absolute;
-            left: 10%;
+            left: 5%;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
-            min-width: 350px;
+            width: 40%;
+            max-width: 450px;
             z-index: 10;
         }
 
@@ -53,6 +50,7 @@
             margin-bottom: 30px;
             font-size: 28px;
             text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .input-group {
@@ -64,6 +62,7 @@
             color: white;
             margin-bottom: 8px;
             font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .input-group input {
@@ -76,62 +75,53 @@
             color: #333;
         }
 
-        .input-group input:focus {
-            outline: none;
-            box-shadow: 0 0 5px #43e97b;
-        }
-
-        /* Контейнер для кнопок справа */
         .buttons-container {
             position: absolute;
-            right: 15%;
+            right: 5%;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             gap: 20px;
             z-index: 10;
+            width: 25%;
+            max-width: 280px;
         }
 
-        .action-btn {
-            width: 200px;
-            padding: 15px 30px;
-            font-size: 20px;
-            font-weight: bold;
-            border: none;
-            border-radius: 15px;
+        .action-img-btn {
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: none;
+            background: transparent;
+            width: 100%;
         }
 
-        .action-btn:active {
+        .action-img-btn img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .btn-register-large {
+            transform: scaleY(2);
+            transform-origin: center;
+        }
+
+        .action-img-btn:active {
             transform: scale(0.97);
             opacity: 0.9;
         }
 
-        .btn-login {
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
-            color: #1a1a2e;
-        }
-
-        .btn-register {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        /* Контейнер для формы регистрации */
+        /* Стили для страницы регистрации */
         .register-container {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 20px;
             width: 90%;
-            max-width: 450px;
+            max-width: 500px;
             text-align: center;
             z-index: 10;
         }
@@ -140,6 +130,7 @@
             color: white;
             margin-bottom: 30px;
             font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .register-container .input-group {
@@ -151,6 +142,7 @@
             color: white;
             margin-bottom: 8px;
             font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .register-container .input-group input {
@@ -163,36 +155,34 @@
             color: #333;
         }
 
-        .register-container .input-group input:focus {
-            outline: none;
-            box-shadow: 0 0 5px #43e97b;
-        }
-
-        .register-container button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
+        .register-img-btn {
             cursor: pointer;
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
-            color: #1a1a2e;
+            transition: transform 0.1s, opacity 0.1s;
+            border: none;
+            background: transparent;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 280px;
         }
 
-        .register-container button:active {
-            transform: scale(0.98);
+        .register-img-btn img {
+            width: 100%;
+            height: auto;
         }
 
         .back-to-login {
             margin-top: 20px;
-            background: transparent !important;
+            background: rgba(0,0,0,0.6);
             color: white !important;
             border: 1px solid white !important;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
         }
 
-        /* Стили для основного интерфейса (после входа) */
+        /* Стили для основного интерфейса */
         .ui-container {
             position: absolute;
             top: 0;
@@ -252,24 +242,13 @@
         }
         .btn-profile {
             left: 85.75%;
-            top: 88.888%;
-            width: 10.875%;
+            top: 10%;
+            width: 12%;
             aspect-ratio: 87 / 53;
             background-size: contain !important;
         }
 
-        @media (max-width: 768px) {
-            .login-container { left: 5%; right: 5%; min-width: auto; width: 90%; }
-            .buttons-container { right: auto; left: 50%; transform: translateX(-50%); top: auto; bottom: 100px; flex-direction: row; }
-            .action-btn { width: 150px; padding: 12px; font-size: 18px; }
-            .btn-users, .btn-lessons, .btn-tasks { width: 25%; top: 65%; }
-            .btn-users { left: 8%; }
-            .btn-lessons { left: 37%; }
-            .btn-tasks { left: 66%; }
-            .btn-profile { width: 15%; left: 80%; top: 85%; }
-        }
-
-        /* Стили для остальных страниц */
+        /* Стили для заданий */
         .tasks-container {
             position: absolute;
             left: 5%;
@@ -277,13 +256,13 @@
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 15px;
             z-index: 10;
         }
 
         .task-btn {
-            width: 240px;
-            height: 240px;
+            width: 200px;
+            height: 200px;
             cursor: pointer;
             transition: transform 0.1s, opacity 0.1s;
             background-size: contain;
@@ -299,60 +278,112 @@
 
         .question-box {
             position: absolute;
-            left: 10%;
-            top: 20%;
-            width: 35%;
+            left: 8%;
+            top: 15%;
+            width: 40%;
             color: white;
-            font-size: clamp(12px, 2vw, 16px);
+            font-size: 18px;
+            line-height: 1.6;
             background: rgba(0,0,0,0.6);
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             z-index: 10;
         }
+        
+        .task-number-image {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35%;
+            max-width: 300px;
+            z-index: 10;
+        }
+        
+        .task-number-image img {
+            width: 100%;
+            height: auto;
+        }
+        
         .answer-area {
             position: absolute;
             left: 8%;
             bottom: 15%;
             z-index: 10;
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
         .answer-input {
-            width: 250px;
-            padding: 10px;
-            font-size: 14px;
+            width: 280px;
+            padding: 12px;
+            font-size: 16px;
             border: 2px solid #667eea;
             border-radius: 8px;
             background: white;
         }
         .check-btn {
-            width: 120px;
-            height: 50px;
+            width: 140px;
+            height: 55px;
             background-size: cover;
             cursor: pointer;
             border: none;
         }
-        .next-btn {
+        .next-task-btn {
             position: absolute;
             right: 5%;
-            bottom: 5%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            bottom: 8%;
             cursor: pointer;
-            font-weight: bold;
             border: none;
+            background: transparent;
+            width: 100px;
+        }
+        .next-task-btn img {
+            width: 100%;
+            height: auto;
+        }
+        .next-task-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
         }
         .completed-msg { font-size: 18px; color: #43e97b; margin-top: 10px; font-weight: bold; }
+
+        /* Стили для навигации по урокам */
+        .lesson-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            z-index: 20;
+        }
+
+        .nav-btn {
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            border: none;
+            background: transparent;
+            width: 100px;
+        }
+
+        .nav-btn img {
+            width: 100%;
+            height: auto;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
 
         .profile-container {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
             border-radius: 20px;
             width: 90%;
@@ -396,7 +427,7 @@
             top: 20%;
             width: 90%;
             max-width: 400px;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.85);
             border-radius: 10px;
             overflow-x: auto;
         }
@@ -409,7 +440,7 @@
         .current-user-panel {
             position: absolute;
             left: 5%;
-            top: 20%;
+            top: 10%;
             background: rgba(0,0,0,0.85);
             padding: 15px;
             border-radius: 10px;
@@ -418,35 +449,6 @@
             max-width: 280px;
         }
         .current-user-panel button { margin-top: 10px; padding: 8px 15px; background: #43e97b; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
-        .lessons-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
-            gap: 20px;
-            justify-content: center;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .lesson-card {
-            aspect-ratio: 200 / 130;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-align: center;
-            padding: 10px;
-            color: white;
-        }
-        .lesson-card.completed { background: linear-gradient(135deg, #43e97b, #38f9d7); }
 
         .video-modal {
             position: fixed;
@@ -491,15 +493,42 @@
         .toast.success { background: #43e97b; color: #1a1a2e; }
         .toast.error { background: #f5576c; color: white; }
 
+        /* Адаптив для мобильных устройств */
         @media (max-width: 768px) {
-            .question-box { width: 80%; left: 10%; top: 10%; font-size: 14px; }
-            .answer-area { left: 10%; bottom: 10%; flex-direction: column; align-items: flex-start; }
-            .check-btn { margin-top: 10px; }
-            .next-btn { bottom: 10px; right: 10px; padding: 8px 16px; font-size: 12px; }
-            .users-table { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
-            .current-user-panel { top: auto; bottom: 20px; left: 5%; right: 5%; width: auto; }
-            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center; }
-            .task-btn { width: 120px; height: 120px; }
+            .login-container { width: 90%; left: 5%; right: 5%; }
+            .buttons-container { position: relative; right: auto; left: 50%; transform: translateX(-50%); top: auto; margin-top: 20px; flex-direction: row; width: 80%; gap: 10px; }
+            .action-img-btn { width: 45%; }
+            .register-container { width: 95%; padding: 20px; }
+            
+            .btn-users, .btn-lessons, .btn-tasks { width: 28%; top: 60%; }
+            .btn-users { left: 5%; }
+            .btn-lessons { left: 36%; }
+            .btn-tasks { left: 67%; }
+            .btn-profile { width: 20%; left: 75%; top: 5%; }
+            
+            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: column; align-items: center; gap: 15px; }
+            .task-btn { width: 150px; height: 150px; }
+            
+            .question-box { width: 90%; left: 5%; top: 10%; font-size: 14px; }
+            .task-number-image { width: 60%; right: 20%; top: 30%; }
+            .answer-area { left: 5%; bottom: 10%; }
+            .answer-input { width: 180px; }
+            .check-btn { width: 100px; height: 45px; background-size: contain; background-repeat: no-repeat; }
+            .next-task-btn { bottom: 5%; right: 5%; width: 70px; }
+            
+            .lesson-nav { bottom: 15px; gap: 20px; }
+            .nav-btn { width: 60px; }
+            
+            .current-user-panel { top: auto; bottom: 80px; left: 10px; right: 10px; }
+            .users-table { top: auto; bottom: 200px; left: 10px; right: 10px; width: auto; }
+            
+            .profile-buttons button { padding: 8px 12px; font-size: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .task-btn { width: 100px; height: 100px; }
+            .question-box { font-size: 12px; }
+            .task-number-image { width: 50%; right: 25%; top: 25%; }
         }
     </style>
 </head>
@@ -518,6 +547,18 @@
             btnTasks: 'images/acetone-2025128-202348-996.png',
             btnBack: 'images/кнопка вернуться (1).png',
             btnCheck: 'images/acetone-20251216-7246-722.png',
+            btnLogin: 'images/вход.png',
+            btnRegister: 'images/регистрация.png',
+            btnAddUser: 'images/добавить пользователя.png',
+            btnNext: 'images/след.png',
+            btnPrev: 'images/назад.png',
+            btnForward: 'images/вперёд.png',
+            taskNumbers: {
+                1: 'images/первая.png',
+                2: 'images/вторая.png',
+                3: 'images/третья.png',
+                4: 'images/четвёртая.png'
+            },
             bronzeMedal: 'images/бронза.png',
             silverMedal: 'images/серебро.png',
             goldMedal: 'images/золото.png',
@@ -542,31 +583,27 @@
 
         // ============ ЗАДАНИЯ ============
         const TASKS = {
-            1: { question: "🐰 Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
-            2: { question: "🚌 Fтр = 200000 Н, масса 5 т, g=10. Найдите μ.", answer: "4", videoFolder: "N2video" },
-            3: { question: "🏀 Начальная скорость 10 м/с, время 2 с, g=10. Скорость у кольца?", answer: "10", videoFolder: "N3video" },
-            4: { question: "🏗️ Высота 20 м, масса 2 т, g=10. Работа крана?", answer: "400000", videoFolder: "N4video" }
+            1: { question: "Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
+            2: { question: "Fтр = 200000 Н, масса 5 т, g = 10 м/с². Найдите коэффициент трения.", answer: "4", videoFolder: "N2video" },
+            3: { question: "Начальная скорость 10 м/с, время полёта 2 с, g = 10 м/с². Найдите скорость у кольца.", answer: "10", videoFolder: "N3video" },
+            4: { question: "Высота 20 м, масса 2 т, g = 10 м/с². Найдите работу крана.", answer: "400000", videoFolder: "N4video" }
         };
 
         // ============ УРОКИ ============
-        const LESSONS = {
-            1: { name: "Кинематика", formula: "v = s/t" },
-            2: { name: "Сила тяжести", formula: "F = mg" },
-            3: { name: "Сила трения", formula: "F = μN" },
-            4: { name: "Механическая работа", formula: "A = F·s" }
+        const LESSON_NAMES = {
+            1: "Кинематика",
+            2: "Сила тяжести",
+            3: "Сила трения",
+            4: "Работа"
         };
 
         // ============ ПРИЛОЖЕНИЕ ============
         const App = {
             currentUser: null,
+            currentLesson: 1,
             init() { 
                 this.loadCurrentUser(); 
-                // Если пользователь уже вошёл, показываем главное меню, иначе окно входа
-                if (this.currentUser) {
-                    this.showPage('main');
-                } else {
-                    this.showPage('login');
-                }
+                this.showPage('login');
             },
             loadCurrentUser() {
                 const saved = localStorage.getItem('LaboratoriaKurchatova_currentUser');
@@ -600,11 +637,10 @@
                     case 'register': this.renderRegisterPage(appDiv); break;
                     case 'main': this.renderMainPage(appDiv); break;
                     case 'tasks': this.renderTasksPage(appDiv); break;
-                    case 'lessons': this.renderLessonsPage(appDiv); break;
+                    case 'lessons': this.renderLessonPage(appDiv, this.currentLesson); break;
                     case 'profile': this.renderProfilePage(appDiv); break;
                     case 'users': this.renderUsersPage(appDiv); break;
                     case 'task': this.renderTaskPage(appDiv, params.taskId); break;
-                    case 'lesson': this.renderLessonPage(appDiv, params.lessonId); break;
                     default: this.renderLoginPage(appDiv);
                 }
             },
@@ -615,7 +651,7 @@
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
                         <div class="login-container">
-                            <h2>🔐 Вход в систему</h2>
+                            <h2>Вход в систему</h2>
                             <div class="input-group">
                                 <label>Логин</label>
                                 <input type="text" id="loginInput" placeholder="Введите ваш логин">
@@ -626,8 +662,12 @@
                             </div>
                         </div>
                         <div class="buttons-container">
-                            <button class="action-btn btn-login" onclick="App.handleLogin()">🚪 Вход</button>
-                            <button class="action-btn btn-register" onclick="App.showPage('register')">📝 Регистрация</button>
+                            <button class="action-img-btn" onclick="App.handleLogin()">
+                                <img src="${PATHS.btnLogin}" alt="Вход">
+                            </button>
+                            <button class="action-img-btn btn-register-large" onclick="App.showPage('register')">
+                                <img src="${PATHS.btnRegister}" alt="Регистрация">
+                            </button>
                         </div>
                     </div>
                 `;
@@ -663,7 +703,7 @@
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
                         <div class="register-container">
-                            <h2>📝 Создание аккаунта</h2>
+                            <h2>Создание аккаунта</h2>
                             <div class="input-group">
                                 <label>Введите логин</label>
                                 <input type="text" id="regLoginInput" placeholder="Придумайте логин">
@@ -676,8 +716,10 @@
                                 <label>Подтвердите пароль</label>
                                 <input type="password" id="regConfirmInput" placeholder="Повторите пароль">
                             </div>
-                            <button onclick="App.handleRegister()">➕ Добавить пользователя</button>
-                            <button class="back-to-login" onclick="App.showPage('login')">← Назад ко входу</button>
+                            <button class="register-img-btn" onclick="App.handleRegister()">
+                                <img src="${PATHS.btnAddUser}" alt="Добавить пользователя">
+                            </button>
+                            <button class="back-to-login" onclick="App.showPage('login')">Назад ко входу</button>
                         </div>
                     </div>
                 `;
@@ -713,12 +755,48 @@
                         <img class="background" src="${PATHS.bgMain}" onerror="this.style.display='none'">
                         <div class="ui-container">
                             <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('users')"></button>
-                            <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.showPage('lessons')"></button>
+                            <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.startLessons()"></button>
                             <button class="diamond-btn btn-tasks" style="background-image: url('${PATHS.btnTasks}')" onclick="App.showPage('tasks')"></button>
                             <button class="back-btn btn-profile" style="background-image: url('${PATHS.btnBack}')" onclick="App.showPage('profile')"></button>
                         </div>
                     </div>
                 `;
+            },
+            startLessons() {
+                this.currentLesson = 1;
+                this.showPage('lessons');
+            },
+            // ============ УРОКИ ============
+            renderLessonPage(container, lessonId) {
+                let backgroundImage = PATHS.lessonBackgrounds[lessonId];
+                const hasPrev = lessonId > 1;
+                const hasNext = lessonId < 4;
+                const lessonName = LESSON_NAMES[lessonId];
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
+                        <img class="background" src="${backgroundImage}" style="position:absolute; width:100%; height:100%; object-fit:contain; z-index:1;" onerror="this.style.display='none'">
+                        <div class="lesson-nav" style="z-index:20;">
+                            ${hasPrev ? `<button class="nav-btn" onclick="App.prevLesson()"><img src="${PATHS.btnPrev}" alt="Назад"></button>` : '<div style="width:100px;"></div>'}
+                            ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
+                        </div>
+                        <div style="position:absolute; top:80px; left:20px; z-index:20;">
+                            <button class="back-btn" style="width:120px; height:70px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                        </div>
+                    </div>
+                `;
+            },
+            nextLesson() {
+                if (this.currentLesson < 4) {
+                    this.currentLesson++;
+                    this.showPage('lessons');
+                }
+            },
+            prevLesson() {
+                if (this.currentLesson > 1) {
+                    this.currentLesson--;
+                    this.showPage('lessons');
+                }
             },
             // ============ ЗАДАНИЯ ============
             renderTasksPage(container) {
@@ -748,14 +826,17 @@
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
-                        <div class="question-box"><strong>📌 Задание ${taskId}</strong><br><br>${task.question}</div>
+                        <div class="question-box"><strong>Задание ${taskId}</strong><br><br>${task.question}</div>
+                        <div class="task-number-image">
+                            <img src="${PATHS.taskNumbers[taskId]}" alt="Задание ${taskId}" style="transform: scale(6); transform-origin: center;">
+                        </div>
                         <div class="answer-area">
                             <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
                             <button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>
                         </div>
-                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:48px; top:380px;">✅ Задание выполнено!</div>' : ''}
+                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:8%; bottom:5%;">Задание выполнено!</div>' : ''}
                         <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
-                        ${taskId < 4 ? `<button class="next-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
+                        ${taskId < 4 ? `<button class="next-task-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})"><img src="${PATHS.btnNext}" alt="След"></button>` : ''}
                     </div>
                 `;
             },
@@ -770,16 +851,16 @@
                     const wasCompleted = this.isTaskCompleted(taskId);
                     if (!wasCompleted) {
                         this.saveTaskProgress(taskId);
-                        this.showToast('✅ Правильно! Задание засчитано!', 'success');
+                        this.showToast('Правильно! Задание засчитано!', 'success');
                     } else {
-                        this.showToast('✅ Правильно! (задание уже было выполнено)', 'success');
+                        this.showToast('Правильно! (задание уже было выполнено)', 'success');
                     }
                     this.playVideo(videoFolder, 'верно');
                     setTimeout(() => {
                         this.renderTasksPage(document.getElementById('app'));
                     }, 500);
                 } else {
-                    this.showToast(`❌ Неправильно. Попробуйте ещё раз!`, 'error');
+                    this.showToast('Неправильно. Попробуйте ещё раз!', 'error');
                     this.playVideo(videoFolder, 'неверно');
                     answerInput.value = '';
                 }
@@ -788,44 +869,13 @@
                 const videoPath = `videos/${folder}/${type}.mp4`;
                 const modal = document.createElement('div');
                 modal.className = 'video-modal';
-                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4">Видео не найдено</video>`;
+                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4">Видео не найдено</video>`;
                 modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
                 document.body.appendChild(modal);
                 const video = modal.querySelector('video');
                 video.onerror = () => {
-                    modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? '🎉' : '😢'}</div><div style="font-size:24px; margin-top:20px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
+                    modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
                 };
-            },
-            // ============ УРОКИ ============
-            renderLessonsPage(container) {
-                let lessonsHtml = '';
-                for (let i = 1; i <= 4; i++) {
-                    const isCompleted = this.isTaskCompleted(i);
-                    lessonsHtml += `<div class="lesson-card ${isCompleted ? 'completed' : ''}" onclick="App.showPage('lesson', {lessonId: ${i}})">
-                        <div style="font-size:20px;font-weight:bold;">📖 Урок ${i}</div>
-                        <div>${LESSONS[i].name}</div>
-                        <div style="font-size:12px;">${LESSONS[i].formula}</div>
-                        ${isCompleted ? '<div class="check-mark">✓</div>' : ''}
-                    </div>`;
-                }
-                container.innerHTML = `
-                    <div class="viewport">
-                        <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
-                        <div class="lessons-grid">${lessonsHtml}</div>
-                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
-                    </div>
-                `;
-            },
-            renderLessonPage(container, lessonId) {
-                const backgroundImage = PATHS.lessonBackgrounds[lessonId];
-                container.innerHTML = `
-                    <div class="viewport">
-                        <img class="background" src="${backgroundImage}" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)'">
-                        <div style="position:absolute; bottom:20px; left:20px; z-index:10;">
-                            <button class="back-btn" style="width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('lessons')"></button>
-                        </div>
-                    </div>
-                `;
             },
             // ============ ПРОФИЛЬ ============
             renderProfilePage(container) {
@@ -842,10 +892,10 @@
                         <div class="profile-container">
                             <div class="profile-avatar" onclick="App.changeAvatar()">${this.currentUser.avatarPath ? `<img src="${this.currentUser.avatarPath}" style="width:100%;height:100%;object-fit:cover;">` : '👤'}</div>
                             <h3>${this.currentUser.login}</h3>
-                            <p>📅 ${new Date(this.currentUser.registrationDate).toLocaleDateString()}</p>
-                            <p>📊 ${completed}/4 (${Math.round(percent)}%)</p>
+                            <p>${new Date(this.currentUser.registrationDate).toLocaleDateString()}</p>
+                            <p>Прогресс: ${completed}/4 (${Math.round(percent)}%)</p>
                             <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
-                            <div class="achievement">${medalImg ? `<img src="${medalImg}" width="80">` : '📘 Нет достижений'}</div>
+                            <div class="achievement">${medalImg ? `<img src="${medalImg}" width="80">` : 'Нет достижений'}</div>
                             <div class="profile-buttons">
                                 <button class="btn-primary" onclick="App.showPage('tasks')">Задания</button>
                                 <button class="btn-secondary" onclick="App.showPage('main')">Главная</button>
@@ -888,19 +938,19 @@
                 }
                 let usersHtml = '';
                 for (const user of users) {
-                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td></td>`;
+                    usersHtml += `<tr class="user-row" onclick="App.selectUser('${user.login}')"><td>${user.login}</td><td>${new Date(user.registrationDate).toLocaleDateString()}</td><td>${user.completedCount}/4</td></tr>`;
                 }
                 container.innerHTML = `
                     <div class="viewport">
                         <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
                         <div class="current-user-panel">
-                            <h3>👤 Текущий</h3>
+                            <h3>Текущий пользователь</h3>
                             <p>${this.currentUser ? this.currentUser.login : 'Не авторизован'}</p>
                             <p>${this.currentUser ? this.getCompletedCount() + '/4' : ''}</p>
                             ${this.currentUser ? '<button onclick="App.showPage(\'profile\')">Профиль</button>' : '<button onclick="App.showPage(\'login\')">Войти</button>'}
                         </div>
                         <div class="users-table">
-                            <h3 style="padding:10px; background:#333;">📋 Пользователи</h3>
+                            <h3 style="padding:10px; background:#333;">Все пользователи</h3>
                             <table style="width:100%"><thead><tr><th>Логин</th><th>Дата</th><th>Прогресс</th></tr></thead><tbody>${usersHtml}</tbody></table>
                         </div>
                         <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
