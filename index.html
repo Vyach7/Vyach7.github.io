@@ -240,13 +240,6 @@
             width: 18.75%;
             aspect-ratio: 150 / 100;
         }
-        .btn-profile {
-            left: 85.75%;
-            top: 10%;
-            width: 12%;
-            aspect-ratio: 87 / 53;
-            background-size: contain !important;
-        }
 
         /* Стили для заданий */
         .tasks-container {
@@ -430,20 +423,6 @@
             opacity: 0.8;
         }
 
-        .profile-btn {
-            position: absolute;
-            cursor: pointer;
-            transition: transform 0.1s, opacity 0.1s;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            border: none;
-        }
-        .profile-btn:active {
-            transform: scale(0.97);
-            opacity: 0.8;
-        }
-
         .video-modal {
             position: fixed;
             top: 0;
@@ -500,7 +479,6 @@
             .btn-users { left: 5%; }
             .btn-lessons { left: 36%; }
             .btn-tasks { left: 67%; }
-            .btn-profile { width: 20%; left: 75%; top: 5%; }
             
             .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: column; align-items: center; gap: 15px; }
             .task-btn { width: 150px; height: 150px; }
@@ -534,10 +512,11 @@
             .lesson-nav-btn { width: 80px; }
 
             .lesson-back-btn-pc {
+                top: 20px;
+                left: 20px;
+                bottom: auto;
                 width: 100px;
                 height: 60px;
-                left: 15px;
-                bottom: 15px;
             }
         }
 
@@ -554,7 +533,7 @@
             .lesson-navigation { gap: 20px; }
             .lesson-nav-btn { width: 70px; }
             .lesson-image { max-height: 45%; }
-            .lesson-back-btn-pc { width: 80px; height: 50px; }
+            .lesson-back-btn-pc { width: 80px; height: 50px; top: 15px; left: 15px; }
         }
     </style>
 </head>
