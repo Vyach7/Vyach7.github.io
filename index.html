@@ -353,6 +353,20 @@
             height: 106px !important;
         }
 
+        .back-btn-mobile {
+            display: none;
+            position: absolute;
+            cursor: pointer;
+            border: none;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            z-index: 15;
+        }
+
         /* Стили для навигации по урокам */
         .lesson-nav {
             position: absolute;
@@ -426,20 +440,6 @@
         .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
         .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        .logout-btn-mobile {
-            display: none;
-            position: absolute;
-            cursor: pointer;
-            border: none;
-            background: rgba(255, 0, 0, 0.7);
-            color: white;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 10px 15px;
-            font-size: 14px;
-            z-index: 15;
-        }
-
         .current-user-panel {
             position: absolute;
             left: 5%;
@@ -498,7 +498,7 @@
 
         /* Адаптив для мобильных устройств */
         @media (max-width: 768px) {
-            .login-container { width: 90%; left: 5%; right: 5%; }
+            .login-container { width: 90%; left: 5%; right: 5%; padding: 30px; }
             .buttons-container { position: relative; right: auto; left: 50%; transform: translateX(-50%); top: auto; margin-top: 20px; flex-direction: row; width: 80%; gap: 20px; }
             .action-img-btn { width: 45%; }
             .register-container { width: 95%; padding: 15px; }
@@ -514,39 +514,50 @@
             .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: column; align-items: center; gap: 15px; }
             .task-btn { width: 150px; height: 150px; }
             
-            .question-box { width: 90%; left: 5%; top: 5%; font-size: 14px; padding: 12px; }
-            .task-number-image { width: 70%; left: 15%; top: 35%; }
-            .answer-area { left: 5%; bottom: 25%; }
+            .question-box { width: 90%; left: 5%; top: 8%; font-size: 14px; padding: 12px; }
+            .task-number-image { width: 70%; left: 15%; top: 38%; }
+            .answer-area { left: 5%; bottom: 22%; }
             .answer-input { width: 150px; padding: 10px; }
             .check-btn { width: 100px; height: 45px; background-size: contain; background-repeat: no-repeat; }
             .next-task-btn { bottom: 5%; right: 2%; width: 120px; }
             
             .back-btn-task { width: 130px !important; height: 80px !important; }
             
-            .lesson-nav { bottom: 15px; gap: 20px; }
-            .nav-btn { width: 60px; }
+            .back-btn-mobile {
+                display: block;
+                left: 10px;
+                top: 10px;
+            }
+
+            .lesson-nav {
+                bottom: 20px;
+                gap: 30px;
+            }
+            .nav-btn { width: 80px; }
             
             .current-user-panel { top: auto; bottom: 80px; left: 10px; right: 10px; }
             
             .profile-buttons button { padding: 8px 12px; font-size: 12px; }
 
-            .logout-btn-mobile {
-                display: block;
-                left: 15px;
-                top: 15px;
+            .lesson-back-btn {
+                width: 100px !important;
+                height: 60px !important;
             }
         }
 
         @media (max-width: 480px) {
             .task-btn { width: 100px; height: 100px; }
-            .question-box { width: 90%; left: 5%; top: 3%; font-size: 12px; padding: 10px; }
-            .task-number-image { width: 65%; left: 17%; top: 28%; }
-            .answer-area { left: 5%; bottom: 28%; gap: 10px; }
+            .question-box { width: 90%; left: 5%; top: 12%; font-size: 12px; padding: 10px; }
+            .task-number-image { width: 65%; left: 17%; top: 36%; }
+            .answer-area { left: 5%; bottom: 25%; gap: 10px; }
             .answer-input { width: 130px; padding: 8px; font-size: 14px; }
             .check-btn { width: 80px; height: 40px; }
             .next-task-btn { width: 100px; }
             .back-btn-task { width: 110px !important; height: 67px !important; }
-            .logout-btn-mobile { left: 10px; top: 10px; padding: 8px 12px; font-size: 12px; }
+            .back-btn-mobile { left: 5px; top: 5px; padding: 8px 12px; font-size: 12px; }
+            .lesson-nav { bottom: 15px; gap: 20px; }
+            .nav-btn { width: 60px; }
+            .lesson-back-btn { width: 80px !important; height: 50px !important; }
         }
     </style>
 </head>
@@ -799,7 +810,7 @@
                             ${hasNext ? `<button class="nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
                         </div>
                         <div style="position:absolute; top:80px; left:20px; z-index:20;">
-                            <button class="back-btn" style="width:120px; height:70px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                            <button class="back-btn lesson-back-btn" style="background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
                         </div>
                     </div>
                 `;
@@ -834,7 +845,7 @@
                         <img class="background" src="${PATHS.bgTasks}" onerror="this.style.display='none'">
                         <div class="tasks-container">${tasksHtml}</div>
                         <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
-                        <button class="logout-btn-mobile" onclick="App.logout()">Выйти</button>
+                        <button class="back-btn-mobile" onclick="App.showPage('main')">← На главную</button>
                     </div>
                 `;
             },
