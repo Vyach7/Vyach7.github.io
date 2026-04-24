@@ -410,48 +410,39 @@
             opacity: 0.9;
         }
 
-        .profile-container {
+        .lesson-back-btn-pc {
             position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
-            padding: 20px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            z-index: 10;
-        }
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 50px;
+            left: 20px;
+            bottom: 20px;
             cursor: pointer;
-            overflow: hidden;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
+            width: 87px;
+            height: 53px;
+            z-index: 20;
         }
-        .progress-bar {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            height: 10px;
-            margin: 15px 0;
-            overflow: hidden;
+
+        .lesson-back-btn-pc:active {
+            transform: scale(0.97);
+            opacity: 0.8;
         }
-        .progress-fill {
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
-            width: 0%;
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.3s;
+
+        .profile-btn {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
         }
-        .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-        .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .profile-btn:active {
+            transform: scale(0.97);
+            opacity: 0.8;
+        }
 
         .video-modal {
             position: fixed;
@@ -541,12 +532,12 @@
                 margin-top: 15px;
             }
             .lesson-nav-btn { width: 80px; }
-            
-            .profile-buttons button { padding: 8px 12px; font-size: 12px; }
 
-            .lesson-back-btn {
-                width: 100px !important;
-                height: 60px !important;
+            .lesson-back-btn-pc {
+                width: 100px;
+                height: 60px;
+                left: 15px;
+                bottom: 15px;
             }
         }
 
@@ -562,8 +553,8 @@
             .back-btn-tasks-mobile { left: 5px; top: 5px; width: 70px; height: 42px; }
             .lesson-navigation { gap: 20px; }
             .lesson-nav-btn { width: 70px; }
-            .lesson-back-btn { width: 80px !important; height: 50px !important; }
             .lesson-image { max-height: 45%; }
+            .lesson-back-btn-pc { width: 80px; height: 50px; }
         }
     </style>
 </head>
@@ -792,7 +783,6 @@
                             <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('profile')"></button>
                             <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.startLessons()"></button>
                             <button class="diamond-btn btn-tasks" style="background-image: url('${PATHS.btnTasks}')" onclick="App.showPage('tasks')"></button>
-                            <button class="back-btn btn-profile" style="background-image: url('${PATHS.btnBack}')" onclick="App.showPage('profile')"></button>
                         </div>
                     </div>
                 `;
@@ -817,9 +807,7 @@
                                 ${hasNext ? `<button class="lesson-nav-btn" onclick="App.nextLesson()"><img src="${PATHS.btnForward}" alt="Вперёд"></button>` : '<div style="width:100px;"></div>'}
                             </div>
                         </div>
-                        <div style="position:absolute; top:20px; left:20px; z-index:20;">
-                            <button class="back-btn lesson-back-btn" style="background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
-                        </div>
+                        <button class="lesson-back-btn-pc" style="background-image:url('${PATHS.btnBack}');" onclick="App.showPage('main')"></button>
                     </div>
                 `;
             },
