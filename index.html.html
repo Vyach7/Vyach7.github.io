@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Лаборатория Курчатова</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+
+        .viewport {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            overflow: hidden;
+        }
+
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .ui-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        /* Ромбовидные кнопки */
+        .diamond-btn {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .diamond-btn:active {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        /* Кнопка назад */
+        .back-btn {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
+        }
+        .back-btn:active {
+            transform: scale(0.97);
+            opacity: 0.8;
+        }
+
+        /* Координаты в процентах от 800x450 */
+        .btn-users {
+            left: 15.875%;
+            top: 66.444%;
+            width: 18.75%;
+            aspect-ratio: 150 / 100;
+        }
+        .btn-lessons {
+            left: 39.5%;
+            top: 66.444%;
+            width: 18.75%;
+            aspect-ratio: 150 / 100;
+        }
+        .btn-tasks {
+            left: 60.75%;
+            top: 66.444%;
+            width: 18.75%;
+            aspect-ratio: 150 / 100;
+        }
+        .btn-profile {
+            left: 85.75%;
+            top: 88.888%;
+            width: 10.875%;
+            aspect-ratio: 87 / 53;
+            background-size: contain !important;
+        }
+
+        /* Адаптив для мобильных */
+        @media (max-width: 768px) {
+            .btn-users, .btn-lessons, .btn-tasks {
+                width: 25%;
+                top: 65%;
+            }
+            .btn-users { left: 8%; }
+            .btn-lessons { left: 37%; }
+            .btn-tasks { left: 66%; }
+            .btn-profile {
+                width: 15%;
+                left: 80%;
+                top: 85%;
+            }
+        }
+
+        /* Стили для страницы заданий - вертикальное меню слева */
+        .tasks-container {
+            position: absolute;
+            left: 100px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            z-index: 10;
+        }
+
+        .task-btn {
+            width: 180px;
+            height: 180px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.1s;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: none;
+            background-color: transparent;
+        }
+        .task-btn:active {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+
+        /* Стили для форм */
+        .form-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 5%;
+            border-radius: 20px;
+            min-width: 280px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        .form-container h2 { color: white; margin-bottom: 20px; }
+        .form-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-primary { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #1a1a2e; }
+        .btn-secondary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #f093fb, #f5576c); color: white; }
+
+        .question-box {
+            position: absolute;
+            left: 10%;
+            top: 20%;
+            width: 35%;
+            color: white;
+            font-size: clamp(12px, 2vw, 16px);
+            background: rgba(0,0,0,0.6);
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+        .answer-area {
+            position: absolute;
+            left: 8%;
+            bottom: 15%;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .answer-input {
+            width: 250px;
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+        }
+        .check-btn {
+            width: 120px;
+            height: 50px;
+            background-size: cover;
+            cursor: pointer;
+            border: none;
+        }
+        .next-btn {
+            position: absolute;
+            right: 5%;
+            bottom: 5%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+        }
+        .completed-msg { font-size: 18px; color: #43e97b; margin-top: 10px; font-weight: bold; }
+
+        .profile-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            z-index: 10;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            height: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            width: 0%;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .profile-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .profile-buttons button { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 220px));
+            gap: 20px;
+            justify-content: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .lesson-card {
+            aspect-ratio: 200 / 130;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+            color: white;
+        }
+        .lesson-card.completed { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-modal video { max-width: 90%; max-height: 90%; }
+        .close-video {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: red;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 3000;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        .toast.success { background: #43e97b; color: #1a1a2e; }
+        .toast.error { background: #f5576c; color: white; }
+
+        @media (max-width: 768px) {
+            .question-box { width: 80%; left: 10%; top: 10%; font-size: 14px; }
+            .answer-area { left: 10%; bottom: 10%; flex-direction: column; align-items: flex-start; }
+            .check-btn { margin-top: 10px; }
+            .next-btn { bottom: 10px; right: 10px; padding: 8px 16px; font-size: 12px; }
+            .tasks-container { left: 50%; transform: translateX(-50%) translateY(-50%); flex-direction: row; gap: 15px; flex-wrap: wrap; justify-content: center; }
+            .task-btn { width: 100px; height: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        // ============ КОНФИГУРАЦИЯ ============
+        const PATHS = {
+            bgMain: 'images/image (1).jpeg',
+            bgLogin: 'images/image (6).jpeg',
+            bgTasks: 'images/закат.png',
+            bgTask: 'images/image (4).jpeg',
+            btnUsers: 'images/acetone-2025128-202148-786.png',
+            btnLessons: 'images/acetone-2025128-202110-537.png',
+            btnTasks: 'images/acetone-2025128-202348-996.png',
+            btnBack: 'images/кнопка вернуться (1).png',
+            btnCheck: 'images/acetone-20251216-7246-722.png',
+            bronzeMedal: 'images/бронза.png',
+            silverMedal: 'images/серебро.png',
+            goldMedal: 'images/золото.png',
+            // Картинки для заданий
+            taskNotCompleted: {
+                1: 'images/неготово1.png',
+                2: 'images/неготово2.png',
+                3: 'images/неготово3.png',
+                4: 'images/неготово4.png'
+            },
+            taskCompleted: {
+                1: 'images/Задание1.png',
+                2: 'images/Задание2.png',
+                3: 'images/Задание3.png',
+                4: 'images/Задание4.png'
+            },
+            // Фоны для уроков
+            lessonBackgrounds: {
+                1: 'images/урок кинематика.png',
+                2: 'images/урок сила тяжести.png',
+                3: 'images/урок сила трения.png',
+                4: 'images/урок работа.png'
+            }
+        };
+
+        // ============ ЗАДАНИЯ ============
+        const TASKS = {
+            1: { question: "🐰 Заяц бежит домой со скоростью 16 м/с, осталось 240 м. Сколько времени?", answer: "15", videoFolder: "N1video" },
+            2: { question: "🚌 Fтр = 200000 Н, масса 5 т, g=10. Найдите μ.", answer: "4", videoFolder: "N2video" },
+            3: { question: "🏀 Начальная скорость 10 м/с, время 2 с, g=10. Скорость у кольца?", answer: "10", videoFolder: "N3video" },
+            4: { question: "🏗️ Высота 20 м, масса 2 т, g=10. Работа крана?", answer: "400000", videoFolder: "N4video" }
+        };
+
+        // ============ УРОКИ ============
+        const LESSONS = {
+            1: { name: "Кинематика", formula: "v = s/t" },
+            2: { name: "Сила тяжести", formula: "F = mg" },
+            3: { name: "Сила трения", formula: "F = μN" },
+            4: { name: "Механическая работа", formula: "A = F·s" }
+        };
+
+        // ============ ПРИЛОЖЕНИЕ ============
+        const App = {
+            currentUser: null,
+            init() { this.loadCurrentUser(); this.showPage('main'); },
+            loadCurrentUser() {
+                const saved = localStorage.getItem('LaboratoriaKurchatova_currentUser');
+                if (saved) {
+                    this.currentUser = JSON.parse(saved);
+                    const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${this.currentUser.login}`);
+                    this.currentUser.completedTasks = progress ? JSON.parse(progress) : [];
+                }
+            },
+            saveCurrentUser() {
+                if (this.currentUser) {
+                    localStorage.setItem('LaboratoriaKurchatova_currentUser', JSON.stringify(this.currentUser));
+                    localStorage.setItem(`LaboratoriaKurchatova_progress_${this.currentUser.login}`, JSON.stringify(this.currentUser.completedTasks));
+                }
+            },
+            saveTaskProgress(taskNumber) {
+                if (!this.currentUser) return false;
+                if (!this.currentUser.completedTasks.includes(taskNumber)) {
+                    this.currentUser.completedTasks.push(taskNumber);
+                    this.saveCurrentUser();
+                    return true;
+                }
+                return false;
+            },
+            isTaskCompleted(taskNumber) { return this.currentUser && this.currentUser.completedTasks.includes(taskNumber); },
+            getCompletedCount() { return this.currentUser ? this.currentUser.completedTasks.length : 0; },
+            showPage(page, params = {}) {
+                const appDiv = document.getElementById('app');
+                switch(page) {
+                    case 'main': this.renderMainPage(appDiv); break;
+                    case 'login': this.renderLoginPage(appDiv); break;
+                    case 'register': this.renderRegisterPage(appDiv); break;
+                    case 'tasks': this.renderTasksPage(appDiv); break;
+                    case 'lessons': this.renderLessonsPage(appDiv); break;
+                    case 'profile': this.renderProfilePage(appDiv); break;
+                    case 'task': this.renderTaskPage(appDiv, params.taskId); break;
+                    case 'lesson': this.renderLessonPage(appDiv, params.lessonId); break;
+                    default: this.renderMainPage(appDiv);
+                }
+            },
+            renderMainPage(container) {
+                const completed = this.getCompletedCount();
+                document.title = this.currentUser ? `Курчатова - ${this.currentUser.login} (${completed}/4)` : 'Лаборатория Курчатова';
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgMain}" onerror="this.style.display='none'">
+                        <div class="ui-container">
+                            <button class="diamond-btn btn-users" style="background-image: url('${PATHS.btnUsers}')" onclick="App.showPage('profile')"></button>
+                            <button class="diamond-btn btn-lessons" style="background-image: url('${PATHS.btnLessons}')" onclick="App.showPage('lessons')"></button>
+                            <button class="diamond-btn btn-tasks" style="background-image: url('${PATHS.btnTasks}')" onclick="App.showPage('tasks')"></button>
+                            <button class="back-btn btn-profile" style="background-image: url('${PATHS.btnBack}')" onclick="App.showPage('profile')"></button>
+                        </div>
+                    </div>
+                `;
+            },
+            renderLoginPage(container) {
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
+                        <div class="form-container">
+                            <h2>🔐 Вход</h2>
+                            <input type="text" id="loginInput" placeholder="Логин">
+                            <input type="password" id="passwordInput" placeholder="Пароль">
+                            <button class="btn-primary" onclick="App.login()">Войти</button>
+                            <button class="btn-secondary" onclick="App.showPage('register')">Регистрация</button>
+                            <button class="btn-danger" onclick="App.showPage('main')">Назад</button>
+                        </div>
+                    </div>
+                `;
+            },
+            login() {
+                const login = document.getElementById('loginInput').value.trim();
+                const password = document.getElementById('passwordInput').value;
+                if (!login || !password) { this.showToast('Введите логин и пароль!', 'error'); return; }
+                const userData = localStorage.getItem(`LaboratoriaKurchatova_user_${login}`);
+                if (!userData) { this.showToast('Пользователь не найден!', 'error'); return; }
+                const user = JSON.parse(userData);
+                if (user.password === password) {
+                    this.currentUser = user;
+                    const progress = localStorage.getItem(`LaboratoriaKurchatova_progress_${login}`);
+                    this.currentUser.completedTasks = progress ? JSON.parse(progress) : [];
+                    this.saveCurrentUser();
+                    this.showToast(`Добро пожаловать, ${login}!`, 'success');
+                    this.showPage('main');
+                } else { this.showToast('Неверный пароль!', 'error'); }
+            },
+            renderRegisterPage(container) {
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
+                        <div class="form-container">
+                            <h2>📝 Регистрация</h2>
+                            <input type="text" id="regLoginInput" placeholder="Логин">
+                            <input type="password" id="regPasswordInput" placeholder="Пароль">
+                            <input type="password" id="regConfirmInput" placeholder="Повторите пароль">
+                            <button class="btn-primary" onclick="App.register()">Зарегистрироваться</button>
+                            <button class="btn-secondary" onclick="App.showPage('login')">Вход</button>
+                            <button class="btn-danger" onclick="App.showPage('main')">Назад</button>
+                        </div>
+                    </div>
+                `;
+            },
+            register() {
+                const login = document.getElementById('regLoginInput').value.trim();
+                const password = document.getElementById('regPasswordInput').value;
+                const confirm = document.getElementById('regConfirmInput').value;
+                if (!login || !password) { this.showToast('Заполните поля!', 'error'); return; }
+                if (password !== confirm) { this.showToast('Пароли не совпадают!', 'error'); return; }
+                if (localStorage.getItem(`LaboratoriaKurchatova_user_${login}`)) { this.showToast('Пользователь существует!', 'error'); return; }
+                const newUser = { login, password, registrationDate: new Date().toISOString(), avatarPath: null };
+                localStorage.setItem(`LaboratoriaKurchatova_user_${login}`, JSON.stringify(newUser));
+                localStorage.setItem(`LaboratoriaKurchatova_progress_${login}`, JSON.stringify([]));
+                this.showToast('Регистрация успешна!', 'success');
+                this.showPage('login');
+            },
+            renderTasksPage(container) {
+                let tasksHtml = '';
+                for (let i = 1; i <= 4; i++) {
+                    const isCompleted = this.isTaskCompleted(i);
+                    let imgUrl;
+                    if (isCompleted) {
+                        imgUrl = PATHS.taskCompleted[i];
+                    } else {
+                        imgUrl = PATHS.taskNotCompleted[i];
+                    }
+                    tasksHtml += `<button class="task-btn" style="background-image: url('${imgUrl}');" onclick="App.showPage('task', {taskId: ${i}})"></button>`;
+                }
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgTasks}" onerror="this.style.display='none'">
+                        <div class="tasks-container">
+                            ${tasksHtml}
+                        </div>
+                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                    </div>
+                `;
+            },
+            renderTaskPage(container, taskId) {
+                const task = TASKS[taskId];
+                if (!task) { this.showPage('tasks'); return; }
+                const isCompleted = this.isTaskCompleted(taskId);
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
+                        <div class="question-box"><strong>📌 Задание ${taskId}</strong><br><br>${task.question}</div>
+                        <div class="answer-area">
+                            <input type="text" id="answerInput" class="answer-input" placeholder="Ответ">
+                            <button class="check-btn" style="background-image: url('${PATHS.btnCheck}'); background-size:cover;" onclick="App.checkTask(${taskId})"></button>
+                        </div>
+                        ${isCompleted ? '<div class="completed-msg" style="position:absolute; left:48px; top:380px;">✅ Задание выполнено!</div>' : ''}
+                        <button class="back-btn" style="position:absolute; left:20px; top:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('tasks')"></button>
+                        ${taskId < 4 ? `<button class="next-btn" onclick="App.showPage('task', {taskId: ${taskId + 1}})">➡ Задание ${taskId + 1}</button>` : ''}
+                    </div>
+                `;
+            },
+            checkTask(taskId) {
+                const answerInput = document.getElementById('answerInput');
+                if (!answerInput) return;
+                const userAnswer = answerInput.value.trim();
+                const correctAnswer = TASKS[taskId].answer;
+                const videoFolder = TASKS[taskId].videoFolder;
+                if (!userAnswer) { this.showToast('Введите ответ!', 'error'); return; }
+                if (userAnswer === correctAnswer) {
+                    const wasCompleted = this.isTaskCompleted(taskId);
+                    if (!wasCompleted) {
+                        this.saveTaskProgress(taskId);
+                        this.showToast('✅ Правильно! Задание засчитано!', 'success');
+                    } else {
+                        this.showToast('✅ Правильно! (задание уже было выполнено)', 'success');
+                    }
+                    this.playVideo(videoFolder, 'верно');
+                    setTimeout(() => {
+                        this.renderTasksPage(document.getElementById('app'));
+                    }, 500);
+                } else {
+                    this.showToast(`❌ Неправильно. Попробуйте ещё раз!`, 'error');
+                    this.playVideo(videoFolder, 'неверно');
+                    answerInput.value = '';
+                }
+            },
+            playVideo(folder, type) {
+                const videoPath = `videos/${folder}/${type}.mp4`;
+                const modal = document.createElement('div');
+                modal.className = 'video-modal';
+                modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><video autoplay controls><source src="${videoPath}" type="video/mp4">Видео не найдено</video>`;
+                modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+                document.body.appendChild(modal);
+                const video = modal.querySelector('video');
+                video.onerror = () => {
+                    modal.innerHTML = `<button class="close-video" onclick="this.parentElement.remove()">✕ Закрыть</button><div style="color:white; text-align:center; padding:40px; background:#333; border-radius:20px;"><div style="font-size:48px;">${type === 'верно' ? '🎉' : '😢'}</div><div style="font-size:24px; margin-top:20px;">${type === 'верно' ? 'Правильно!' : 'Неправильно!'}</div><div style="margin-top:20px;">Видео не найдено: ${videoPath}</div></div>`;
+                };
+            },
+            renderLessonsPage(container) {
+                let lessonsHtml = '';
+                for (let i = 1; i <= 4; i++) {
+                    const isCompleted = this.isTaskCompleted(i);
+                    lessonsHtml += `<div class="lesson-card ${isCompleted ? 'completed' : ''}" onclick="App.showPage('lesson', {lessonId: ${i}})">
+                        <div style="font-size:20px;font-weight:bold;">📖 Урок ${i}</div>
+                        <div>${LESSONS[i].name}</div>
+                        <div style="font-size:12px;">${LESSONS[i].formula}</div>
+                        ${isCompleted ? '<div class="check-mark">✓</div>' : ''}
+                    </div>`;
+                }
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgTask}" onerror="this.style.display='none'">
+                        <div class="lessons-grid">${lessonsHtml}</div>
+                        <button class="back-btn" style="position:absolute; left:20px; bottom:20px; width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('main')"></button>
+                    </div>
+                `;
+            },
+            renderLessonPage(container, lessonId) {
+                const lesson = LESSONS[lessonId];
+                if (!lesson) { this.showPage('lessons'); return; }
+                const backgroundImage = PATHS.lessonBackgrounds[lessonId];
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${backgroundImage}" onerror="this.style.display='none'; this.parentElement.style.background='linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)'">
+                        <div style="position:absolute; bottom:20px; left:20px; z-index:10;">
+                            <button class="back-btn" style="width:87px; height:53px; background-image:url('${PATHS.btnBack}'); background-size:contain; background-repeat:no-repeat; background-position:center; border:none; cursor:pointer;" onclick="App.showPage('lessons')"></button>
+                        </div>
+                    </div>
+                `;
+            },
+            renderProfilePage(container) {
+                if (!this.currentUser) { this.showPage('login'); return; }
+                const completed = this.getCompletedCount();
+                const percent = (completed / 4) * 100;
+                let medalImg = '';
+                if (completed >= 4) medalImg = PATHS.goldMedal;
+                else if (completed >= 2) medalImg = PATHS.silverMedal;
+                else if (completed >= 1) medalImg = PATHS.bronzeMedal;
+                container.innerHTML = `
+                    <div class="viewport">
+                        <img class="background" src="${PATHS.bgLogin}" onerror="this.style.display='none'">
+                        <div class="profile-container">
+                            <div class="profile-avatar" onclick="App.changeAvatar()">${this.currentUser.avatarPath ? `<img src="${this.currentUser.avatarPath}" style="width:100%;height:100%;object-fit:cover;">` : '👤'}</div>
+                            <h3>${this.currentUser.login}</h3>
+                            <p>📅 ${new Date(this.currentUser.registrationDate).toLocaleDateString()}</p>
+                            <p>📊 ${completed}/4 (${Math.round(percent)}%)</p>
+                            <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
+                            <div class="achievement">${medalImg ? `<img src="${medalImg}" width="80">` : '📘 Нет достижений'}</div>
+                            <div class="profile-buttons">
+                                <button class="btn-primary" onclick="App.showPage('tasks')">Задания</button>
+                                <button class="btn-secondary" onclick="App.showPage('main')">Главная</button>
+                                <button class="btn-danger" onclick="App.logout()">Выйти</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+            changeAvatar() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            this.currentUser.avatarPath = event.target.result;
+                            this.saveCurrentUser();
+                            this.showPage('profile');
+                            this.showToast('Аватар обновлён', 'success');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+                input.click();
+            },
+            showToast(text, type) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerText = text;
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2000);
+            },
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('LaboratoriaKurchatova_currentUser');
+                this.showToast('Вы вышли', 'success');
+                this.showPage('main');
+            }
+        };
+
+        App.init();
+    </script>
+</body>
+</html>
